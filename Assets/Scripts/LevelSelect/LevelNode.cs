@@ -11,6 +11,8 @@ namespace Assets.Scripts.LevelSelect
     using System.Linq;
     using System.Text;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
+    using Shared;
 
     /// <summary>
     /// Describes node in the levels
@@ -27,6 +29,8 @@ namespace Assets.Scripts.LevelSelect
         /// </summary>
         public void OnSelect()
         {
+            FadeInOut.CurrentInstance.FadeIn();
+            SceneManager.LoadScene(this.LevelIndex);
         }
     }
 }

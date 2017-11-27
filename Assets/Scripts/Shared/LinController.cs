@@ -14,13 +14,22 @@ namespace Assets.Scripts.Shared
     /// <summary>
     /// Controller for Lin
     /// </summary>
-    public abstract class LinController : BaseController
+    public abstract class LinController
     {
-        protected override int _controllerIndex
+        /// <summary>
+        /// Index for the controller
+        /// </summary>
+        private static int _controllerIndex = 1;
+
+        /// <summary>
+        /// Gets the input schenma
+        /// </summary>
+        /// <returns></returns>
+        public static InputNames ControlSchema
         {
             get
             {
-                return 1;
+                return InputMapping.GetInputNames(_controllerIndex);
             }
         }
     }
