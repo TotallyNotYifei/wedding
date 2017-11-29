@@ -19,14 +19,19 @@ namespace Assets.LeagueOfLegends
     public class LeesinController : Character
     {
         /// <summary>
-        /// Prefab for the Q projectile
-        /// </summary>
-        public Projectile QProjectilePrefab;
-
-        /// <summary>
         /// Speed of the resonating strike
         /// </summary>
         public float ResonatingStrikeSpeed;
+
+        /// <summary>
+        /// The distance that will consider resonating strike done
+        /// </summary>
+        public float ResonatingStrikeEndDistance;
+
+        /// <summary>
+        /// Prefab for the Q projectile
+        /// </summary>
+        public Projectile QProjectilePrefab;
 
         /// <summary>
         /// The target
@@ -59,12 +64,16 @@ namespace Assets.LeagueOfLegends
         private InputNames _controls;
 
         /// <summary>
+        /// The 2D rigidbody
+        /// </summary>
+        private Rigidbody2D _rgbd;
+
+        /// <summary>
         /// When the Q landed
         /// </summary>
         public void OnQLanded(EnemyController enemy)
         {
             this._Qtarget = enemy.gameObject;
-            this._animator.SetBool("Resonating", true);
         }
 
         /// <summary>
@@ -72,9 +81,16 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressQ()
         {
+            //  If leesin is in the middle of resonating strike do nothing
+            if (this._isResonating)
+            {
+                return;
+            }
+
             // If there's a Q target, 
             if (this._Qtarget != null)
             {
+                this._animator.SetBool("Resonating", true);
                 this._isResonating = true;
             }
             else if (!this.HasEffect(EffectEnum.QCoolDown))
@@ -99,6 +115,8 @@ namespace Assets.LeagueOfLegends
             this._sprite = this.GetComponent<SpriteRenderer>();
             this._controls = BurneyController.ControlSchema;
             this._animator = this.GetComponent<Animator>();
+            this._rgbd = this.GetComponent<Rigidbody2D>();
+
             this._isFacingRight = true;
 
             base.Start();
@@ -121,39 +139,46 @@ namespace Assets.LeagueOfLegends
             {
                 var movementThisFrame = this.ResonatingStrikeSpeed * Time.deltaTime;
                 var xDiff = this._Qtarget.transform.position.x - this.transform.position.x;
-                if (Math.Abs(xDiff) < movementThisFrame)
+                if (Math.Abs(xDiff) < ResonatingStrikeEndDistance)
                 {
-                    this.transform.position = this._Qtarget.transform.position;
                     this._Qtarget = null;
                     this._isResonating = false;
                     this._animator.SetBool("Resonating", false);
                     this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
                 }
-            }
-            // Move the character based on the input
-            float stickX = 0;
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                stickX = -1;
-                this._isFacingRight = false;
-                this._sprite.flipX = true;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                stickX = 1;
-                this._isFacingRight = true;
-                this._sprite.flipX = false;
-            }
-
-            if (stickX != 0 && !this.Effects.ContainsKey(EffectEnum.Snare))
-            {
-                this._animator.SetBool("IsMoving", true);
-                this.transform.position += new Vector3(this.BaseSpeed * Time.deltaTime * Math.Sign(stickX), 0, 0);
+                else
+                {
+                    movementThisFrame *= Math.Sign(xDiff);
+                    this._rgbd.MovePosition(this.transform.position + new Vector3(movementThisFrame, 0));
+                }
             }
             else
             {
-                this._animator.SetBool("IsMoving", false);
+                // Move the character based on the input
+                float stickX = 0;
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    stickX = -1;
+                    this._isFacingRight = false;
+                    this._sprite.flipX = true;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    stickX = 1;
+                    this._isFacingRight = true;
+                    this._sprite.flipX = false;
+                }
+
+                if (stickX != 0 && !this.Effects.ContainsKey(EffectEnum.Snare))
+                {
+                    this._animator.SetBool("IsMoving", true);
+                    this._rgbd.MovePosition(this.transform.position + new Vector3(this.BaseSpeed * Time.deltaTime * Math.Sign(stickX), 0, 0));
+                }
+                else
+                {
+                    this._animator.SetBool("IsMoving", false);
+                }
             }
 
             base.Update();

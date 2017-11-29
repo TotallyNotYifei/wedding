@@ -18,6 +18,16 @@ namespace Assets.LeagueOfLegends
         public LeesinController LeeSin;
 
         /// <summary>
+        /// Used for initialization
+        /// </summary>
+        protected override void Start()
+        {
+            Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), this.LeeSin.GetComponent<BoxCollider2D>());
+
+            base.Start();
+        }
+
+        /// <summary>
         /// When a trigger enters
         /// </summary>
         /// <param name="collision">The collision</param>

@@ -36,16 +36,5 @@ namespace Assets.LeagueOfLegends
 
             base.Update();
         }
-
-        protected void OnTriggerEnter(Collider other)
-        {
-            Debug.Log("BANG2");
-        }
-
-
-        protected override void OnTriggerEnter2D(Collider2D collision)
-        {
-            base.OnTriggerEnter2D(collision);
-        }
     }
 }
