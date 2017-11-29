@@ -4,16 +4,21 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-namespace Assets.Scripts.LeagueOfLegends
+namespace Assets.LeagueOfLegends
 {
     /// <summary>
     /// A list of possible player inflicted debuffs
     /// </summary>
-    public enum DebuffEnum
+    public enum EffectEnum
     {
         Snare,
         Slow,
         LuxShiled,
-        LeeShield
+        LeeShield,
+        LeeQLanded,
+        QCoolDown,
+        WCoolDown,
+        ECoolDown,
+        RCoolDown
     }
 }

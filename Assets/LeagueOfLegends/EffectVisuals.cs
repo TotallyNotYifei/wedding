@@ -4,7 +4,7 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-namespace Assets.Scripts.LeagueOfLegends
+namespace Assets.LeagueOfLegends
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Assets.Scripts.LeagueOfLegends
     /// <summary>
     /// An effect that appears on top of the character with debuffs
     /// </summary>
-    public class DebuffEffect :  MonoBehaviour
+    public class EffectVisuals :  MonoBehaviour
     {
         /// <summary>
         /// The target character
@@ -25,14 +25,14 @@ namespace Assets.Scripts.LeagueOfLegends
         /// <summary>
         /// What this effect is representing
         /// </summary>
-        public DebuffEnum TargetDebuff;
+        public EffectEnum TargetEffect;
 
         /// <summary>
         /// Called once per frame
         /// </summary>
         protected void Update()
         {
-            if (TargetCharacter.Debuffs.ContainsKey(this.TargetDebuff))
+            if (TargetCharacter.Effects.ContainsKey(this.TargetEffect))
             {
                 this.transform.position = this.TargetCharacter.transform.position;
             }

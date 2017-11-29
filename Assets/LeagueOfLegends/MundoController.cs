@@ -4,7 +4,7 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-namespace Assets.Scripts.LeagueOfLegends
+namespace Assets.LeagueOfLegends
 {
     using System;
     using System.Collections.Generic;
@@ -15,39 +15,37 @@ namespace Assets.Scripts.LeagueOfLegends
     /// <summary>
     /// Controls the NPC Mundo
     /// </summary>
-    public class MundoController : Character
+    public class MundoController : EnemyController
     {
         /// <summary>
         /// Called once per frame
         /// </summary>
-        protected void Update()
+        protected override void Update()
         {
-            // Decay the debuffs
-            var timePassed = Time.deltaTime;
-            foreach (var item in this.Debuffs)
-            {
-                var key = item.Key;
-                if (item.Value < Time.deltaTime)
-                {
-                    this.Debuffs.Remove(key);
-                }
-                else
-                {
-                    this.Debuffs[key] = item.Value - Time.deltaTime;
-                }
-            }
-
             // Move if not snared
-            if (!this.Debuffs.ContainsKey(DebuffEnum.Snare))
+            if (!this.HasEffect(EffectEnum.Snare))
             {
                 var movementThisFrame = this.BaseSpeed * Time.deltaTime;
-                if (this.Debuffs.ContainsKey(DebuffEnum.Slow))
+                if (this.Effects.ContainsKey(EffectEnum.Slow))
                 {
                     movementThisFrame /= 2;
                 }
 
                 this.transform.position += new Vector3(movementThisFrame, 0);
             }
+
+            base.Update();
+        }
+
+        protected void OnTriggerEnter(Collider other)
+        {
+            Debug.Log("BANG2");
+        }
+
+
+        protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            base.OnTriggerEnter2D(collision);
         }
     }
 }
