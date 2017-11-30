@@ -24,9 +24,20 @@ namespace Assets.LeagueOfLegends
         public float ResonatingStrikeSpeed;
 
         /// <summary>
+        /// How fast LeeSin's W goes
+        /// </summary>
+        public float DashSpeed;
+
+        /// <summary>
         /// The distance that will consider resonating strike done
         /// </summary>
-        public float ResonatingStrikeEndDistance;
+        public float MovementEndDistance;
+
+        /// <summary>
+        /// Dash settings
+        /// </summary>
+        public float DashMinRange;
+        public float DashMaxRange;
 
         /// <summary>
         /// Prefab for the Q projectile
@@ -42,6 +53,16 @@ namespace Assets.LeagueOfLegends
         /// If LeeSin si in the middle of resonating strike
         /// </summary>
         private bool _isResonating;
+
+        /// <summary>
+        /// The dash target
+        /// </summary>
+        private GameObject _WTarget;
+
+        /// <summary>
+        /// If LeeSin is in the middle of a dash
+        /// </summary>
+        private bool _isDashing;
 
         /// <summary>
         /// If Lee Sin is facing right
@@ -106,6 +127,40 @@ namespace Assets.LeagueOfLegends
             }
         }
 
+        /// <summary>
+        /// When the user presses W to cast dash
+        /// </summary>
+        private void OnPressW()
+        {
+            var targets = DashTarget.Targets;
+            float minSearch = this._isFacingRight ? this.DashMinRange : -this.DashMaxRange;
+            float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.DashMinRange;
+
+            DashTarget winner = null;
+            float? closet = null;
+            foreach (var target in targets)
+            {
+                var xDiff = target.transform.position.x - this.transform.position.x;
+
+                // Check if target is within eligible range
+                if (minSearch < xDiff && xDiff < maxSearch)
+                {
+                    // Compared to winner
+                    if (closet == null || Math.Abs(xDiff) < closet)
+                    {
+                        winner = target;
+                        closet = Math.Abs(xDiff);
+                    }
+                }
+            }
+
+            if (winner != null)
+            {
+                this._animator.SetBool("Dashing", true);
+                this._WTarget = winner.gameObject;
+                this._isDashing = true;
+            }
+        }
 
         /// <summary>
         /// Used for initialization
@@ -133,18 +188,40 @@ namespace Assets.LeagueOfLegends
             {
                 this.OnPressQ();
             }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                this.OnPressW();
+            }
 
             // Check if resonating strike is happening
             if (this._Qtarget != null && this._isResonating)
             {
                 var movementThisFrame = this.ResonatingStrikeSpeed * Time.deltaTime;
                 var xDiff = this._Qtarget.transform.position.x - this.transform.position.x;
-                if (Math.Abs(xDiff) < ResonatingStrikeEndDistance)
+                if (Math.Abs(xDiff) < MovementEndDistance)
                 {
                     this._Qtarget = null;
                     this._isResonating = false;
                     this._animator.SetBool("Resonating", false);
                     this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+                }
+                else
+                {
+                    movementThisFrame *= Math.Sign(xDiff);
+                    this._rgbd.MovePosition(this.transform.position + new Vector3(movementThisFrame, 0));
+                }
+            }
+            // Check if W dash is happening
+            if (this._WTarget != null && this._isDashing)
+            {
+                var movementThisFrame = this.DashSpeed * Time.deltaTime;
+                var xDiff = this._WTarget.transform.position.x - this.transform.position.x;
+                if (Math.Abs(xDiff) < MovementEndDistance)
+                {
+                    this._WTarget = null;
+                    this._isDashing = false;
+                    this._animator.SetBool("Dashing", false);
+                    this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
                 }
                 else
                 {

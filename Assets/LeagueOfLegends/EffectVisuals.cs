@@ -32,7 +32,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         protected void Update()
         {
-            if (TargetCharacter.Effects.ContainsKey(this.TargetEffect))
+            if (TargetCharacter.HasEffect(this.TargetEffect))
             {
                 this.transform.position = this.TargetCharacter.transform.position;
             }

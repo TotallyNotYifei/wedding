@@ -51,7 +51,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         /// <param name="effect">Target effect</param>
         /// <returns>True if the active effect is in effect</returns>
-        protected bool HasEffect(EffectEnum effect)
+        public bool HasEffect(EffectEnum effect)
         {
             return this.Effects.ContainsKey(effect);
         }
