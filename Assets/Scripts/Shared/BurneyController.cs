@@ -15,16 +15,22 @@ namespace Assets.Scripts.Shared
     /// <summary>
     /// Controller for Burney
     /// </summary>
-    public abstract class BurneyController : BaseController
+    public static class BurneyController
     {
         /// <summary>
         /// Index for the controller
         /// </summary>
-        protected override int _controllerIndex
+        private static int _controllerIndex = 0;
+
+        /// <summary>
+        /// Gets the input schenma
+        /// </summary>
+        /// <returns></returns>
+        public static InputNames ControlSchema
         {
             get
             {
-                return 0;
+                return InputMapping.GetInputNames(_controllerIndex);
             }
         }
     }

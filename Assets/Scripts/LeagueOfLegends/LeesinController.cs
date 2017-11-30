@@ -16,7 +16,7 @@ namespace Assets.Scripts.LeagueOfLegends
     /// <summary>
     /// Controls Lee Sin
     /// </summary>
-    public class LeesinController : BurneyController
+    public class LeesinController : Character
     {
         /// <summary>
         /// Prefab for the Q projectile
@@ -26,51 +26,72 @@ namespace Assets.Scripts.LeagueOfLegends
         /// <summary>
         /// The target
         /// </summary>
-        protected GameObject _target;
+        private GameObject _target;
 
         /// <summary>
-        /// If leesin landed the Q
+        /// If LeeSin landed the Q
         /// </summary>
-        protected bool _didQLand;
+        private bool _didQLand;
 
         /// <summary>
         /// How much time left until q is usable again
         /// </summary>
-        protected float _qCooldown;
+        private float _qCooldown;
 
         /// <summary>
         /// How much time left until w is usable again
         /// </summary>
-        protected float _wCooldown;
+        private float _wCooldown;
 
         /// <summary>
         /// How much time left until e is usable again
         /// </summary>
-        protected float _eCooldown;
+        private float _eCooldown;
 
         /// <summary>
         /// How much time left until r is usable again
         /// </summary>
-        protected float _rCooldown;
+        private float _rCooldown;
 
+        /// <summary>
+        /// The sprite renderer
+        /// </summary>
+        private SpriteRenderer _sprite;
+
+        /// <summary>
+        /// The control schema
+        /// </summary>
+        private InputNames _controls;
 
         /// <summary>
         /// Try to use Q
         /// </summary>
-        protected void OnPressQ()
+        private void OnPressQ()
         {
             
         }
 
         /// <summary>
+        /// Used for initialization
+        /// </summary>
+        protected void Start()
+        {
+            this._sprite = this.GetComponent<SpriteRenderer>();
+            this._controls = BurneyController.ControlSchema;
+        }
+
+        /// <summary>
         /// Called once per frame
         /// </summary>
-        protected override void Update()
+        protected void Update()
         {
-            if (Input.GetButtonDown(this._inputNames.AButton))
+            if (Input.GetButtonDown(this._controls.AButton))
             {
                 this.OnPressQ();
             }
+
+            // Move the character based on the input
+            var stickX = Input.GetAxis(this._controls.XAxis);
         }
     }
 }
