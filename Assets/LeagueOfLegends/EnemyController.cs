@@ -18,11 +18,17 @@ namespace Assets.LeagueOfLegends
         public LeesinController LeeSin;
 
         /// <summary>
+        /// A list  of enemies
+        /// </summary>
+        public static List<EnemyController> Enemies = new List<EnemyController>();
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected override void Start()
         {
             Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), this.LeeSin.GetComponent<BoxCollider2D>());
+            EnemyController.Enemies.Add(this);
 
             base.Start();
         }
@@ -42,6 +48,14 @@ namespace Assets.LeagueOfLegends
                     Destroy(p.gameObject);
                 }
             }
+        }
+
+        /// <summary>
+        /// Called  when the enemy gameobject is destroyed
+        /// </summary>
+        protected void OnDestroy()
+        {
+            EnemyController.Enemies.Remove(this);
         }
     }
 }

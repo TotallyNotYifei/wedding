@@ -16,10 +16,12 @@ namespace Assets.LeagueOfLegends
         LuxShiled,
         LeeShield,
         LeeQLanded,
+        LeeWSecondary,
         QCoolDown,
         WCoolDown,
-        LeeSinSecondWCoolDown,
+        WSecondaryCooldown,
         ECoolDown,
+        ESecondaryCooldown,
         RCoolDown
     }
 }

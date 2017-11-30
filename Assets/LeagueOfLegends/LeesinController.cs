@@ -40,6 +40,11 @@ namespace Assets.LeagueOfLegends
         public float DashMaxRange;
 
         /// <summary>
+        /// Range of the initial E skill
+        /// </summary>
+        public float ERange;
+
+        /// <summary>
         /// Prefab for the Q projectile
         /// </summary>
         public Projectile QProjectilePrefab;
@@ -138,7 +143,8 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressW()
         {
-            if (!this.HasEffect(EffectEnum.WCoolDown))
+            float wCoolDown;
+            if (!this.Effects.TryGetValue(EffectEnum.WCoolDown, out wCoolDown))
             {
                 var targets = DashTarget.Targets;
                 float minSearch = this._isFacingRight ? this.DashMinRange : -this.DashMaxRange;
@@ -169,6 +175,32 @@ namespace Assets.LeagueOfLegends
                     this._isDashing = true;
                     this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
                 }
+            }
+            else if (!this.HasEffect(EffectEnum.WSecondaryCooldown))
+            {
+                this.ApplyEffect(EffectEnum.WSecondaryCooldown, wCoolDown);
+                this.ApplyEffect(EffectEnum.LeeWSecondary, 2.0f);
+            }
+        }
+
+        /// <summary>
+        /// Called when the user presses E
+        /// </summary>
+        private void OnPressE()
+        {
+            float eCooldown;
+            if (!this.Effects.TryGetValue(EffectEnum.ECoolDown, out eCooldown))
+            {
+                foreach (var enemy in EnemyController.Enemies)
+                {
+                    var xDiff = enemy.transform.position.x - this.transform.position.x;
+                    if (Math.Abs(xDiff) < this.ERange)
+                    {
+                        enemy.ApplyEffect(EffectEnum.Slow, 2.0f);
+                    }
+                }
+
+                this.ApplyEffect(EffectEnum.ECoolDown, 3.0f);
             }
         }
 
