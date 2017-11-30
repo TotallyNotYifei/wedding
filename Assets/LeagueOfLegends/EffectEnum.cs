@@ -18,6 +18,7 @@ namespace Assets.LeagueOfLegends
         LeeQLanded,
         QCoolDown,
         WCoolDown,
+        LeeSinSecondWCoolDown,
         ECoolDown,
         RCoolDown
     }

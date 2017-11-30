@@ -85,11 +85,6 @@ namespace Assets.LeagueOfLegends
         private InputNames _controls;
 
         /// <summary>
-        /// The 2D rigidbody
-        /// </summary>
-        private Rigidbody2D _rgbd;
-
-        /// <summary>
         /// When the Q landed
         /// </summary>
         public void OnQLanded(EnemyController enemy)
@@ -109,12 +104,23 @@ namespace Assets.LeagueOfLegends
             }
 
             // If there's a Q target, 
+            var canFireQ = !this.HasEffect(EffectEnum.QCoolDown);
             if (this._Qtarget != null)
             {
-                this._animator.SetBool("Resonating", true);
-                this._isResonating = true;
+                if (!canFireQ)
+                {
+                    this._animator.SetBool("Resonating", true);
+                    this._isResonating = true;
+                }
+                else
+                {
+                    // Missed window
+                    this._Qtarget = null;
+                    canFireQ = true;
+                }
             }
-            else if (!this.HasEffect(EffectEnum.QCoolDown))
+            
+            if(canFireQ)
             {
                 var newQ = Instantiate(this.QProjectilePrefab.gameObject).GetComponent<Projectile>();
                 newQ.transform.position = this.transform.position;
@@ -132,33 +138,37 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressW()
         {
-            var targets = DashTarget.Targets;
-            float minSearch = this._isFacingRight ? this.DashMinRange : -this.DashMaxRange;
-            float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.DashMinRange;
-
-            DashTarget winner = null;
-            float? closet = null;
-            foreach (var target in targets)
+            if (!this.HasEffect(EffectEnum.WCoolDown))
             {
-                var xDiff = target.transform.position.x - this.transform.position.x;
+                var targets = DashTarget.Targets;
+                float minSearch = this._isFacingRight ? this.DashMinRange : -this.DashMaxRange;
+                float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.DashMinRange;
 
-                // Check if target is within eligible range
-                if (minSearch < xDiff && xDiff < maxSearch)
+                DashTarget winner = null;
+                float? closest = null;
+                foreach (var target in targets)
                 {
-                    // Compared to winner
-                    if (closet == null || Math.Abs(xDiff) < closet)
+                    var xDiff = target.transform.position.x - this.transform.position.x;
+
+                    // Check if target is in range
+                    if (minSearch < xDiff && xDiff < maxSearch)
                     {
-                        winner = target;
-                        closet = Math.Abs(xDiff);
+                        // Compared to winner
+                        if (closest == null || Math.Abs(xDiff) < closest)
+                        {
+                            winner = target;
+                            closest = Math.Abs(xDiff);
+                        }
                     }
                 }
-            }
 
-            if (winner != null)
-            {
-                this._animator.SetBool("Dashing", true);
-                this._WTarget = winner.gameObject;
-                this._isDashing = true;
+                if (winner != null)
+                {
+                    this._animator.SetBool("Dashing", true);
+                    this._WTarget = winner.gameObject;
+                    this._isDashing = true;
+                    this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
+                }
             }
         }
 
@@ -170,7 +180,6 @@ namespace Assets.LeagueOfLegends
             this._sprite = this.GetComponent<SpriteRenderer>();
             this._controls = BurneyController.ControlSchema;
             this._animator = this.GetComponent<Animator>();
-            this._rgbd = this.GetComponent<Rigidbody2D>();
 
             this._isFacingRight = true;
 
@@ -198,6 +207,8 @@ namespace Assets.LeagueOfLegends
             {
                 var movementThisFrame = this.ResonatingStrikeSpeed * Time.deltaTime;
                 var xDiff = this._Qtarget.transform.position.x - this.transform.position.x;
+                this._isFacingRight = xDiff > 0;
+                this._sprite.flipX = !this._isFacingRight;
                 if (Math.Abs(xDiff) < MovementEndDistance)
                 {
                     this._Qtarget = null;
@@ -208,14 +219,16 @@ namespace Assets.LeagueOfLegends
                 else
                 {
                     movementThisFrame *= Math.Sign(xDiff);
-                    this._rgbd.MovePosition(this.transform.position + new Vector3(movementThisFrame, 0));
+                    this.transform.position += new Vector3(movementThisFrame, 0);
                 }
             }
             // Check if W dash is happening
-            if (this._WTarget != null && this._isDashing)
+            else if (this._WTarget != null && this._isDashing)
             {
                 var movementThisFrame = this.DashSpeed * Time.deltaTime;
                 var xDiff = this._WTarget.transform.position.x - this.transform.position.x;
+                this._isFacingRight = xDiff > 0;
+                this._sprite.flipX = !this._isFacingRight;
                 if (Math.Abs(xDiff) < MovementEndDistance)
                 {
                     this._WTarget = null;
@@ -226,7 +239,7 @@ namespace Assets.LeagueOfLegends
                 else
                 {
                     movementThisFrame *= Math.Sign(xDiff);
-                    this._rgbd.MovePosition(this.transform.position + new Vector3(movementThisFrame, 0));
+                    this.transform.position += new Vector3(movementThisFrame, 0);
                 }
             }
             else
@@ -250,7 +263,7 @@ namespace Assets.LeagueOfLegends
                 if (stickX != 0 && !this.Effects.ContainsKey(EffectEnum.Snare))
                 {
                     this._animator.SetBool("IsMoving", true);
-                    this._rgbd.MovePosition(this.transform.position + new Vector3(this.BaseSpeed * Time.deltaTime * Math.Sign(stickX), 0, 0));
+                    this.transform.position += new Vector3(this.BaseSpeed * Time.deltaTime * Math.Sign(stickX), 0, 0);
                 }
                 else
                 {

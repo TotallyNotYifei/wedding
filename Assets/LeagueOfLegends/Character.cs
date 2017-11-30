@@ -27,6 +27,12 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         public IDictionary<EffectEnum, float> Effects { get; private set; }
 
+
+        /// <summary>
+        /// The 2D rigidbody
+        /// </summary>
+        protected Rigidbody2D _rgbd;
+
         /// <summary>
         /// Adds a debuff
         /// </summary>
@@ -62,6 +68,7 @@ namespace Assets.LeagueOfLegends
         protected virtual void Start()
         {
             this.Effects = new Dictionary<EffectEnum, float>();
+            this._rgbd = this.GetComponent<Rigidbody2D>();
         }
 
         /// <summary>
