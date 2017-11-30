@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: cacc17794c650dc4ab6f4134f4840e3e
-timeCreated: 1511831893
+timeCreated: 1512059470
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -26,6 +26,10 @@ TextureImporter:
     21300038: LeeSin_19
     21300040: LeeSin_20
     21300042: LeeSin_21
+    21300044: LeeSin_22
+    21300046: LeeSin_23
+    21300048: LeeSin_24
+    21300050: LeeSin_25
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -394,6 +398,58 @@ TextureImporter:
         serializedVersion: 2
         x: 72
         y: 144
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeeSin_22
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 72
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeeSin_23
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 72
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeeSin_24
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 72
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: LeeSin_25
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 72
         width: 72
         height: 72
       alignment: 0

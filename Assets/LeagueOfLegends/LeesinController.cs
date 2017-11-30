@@ -18,6 +18,12 @@ namespace Assets.LeagueOfLegends
     /// </summary>
     public class LeesinController : Character
     {
+        #region Unity Editor links
+        /// <summary>
+        /// The mundo
+        /// </summary>
+        public MundoController Mundo;
+
         /// <summary>
         /// Speed of the resonating strike
         /// </summary>
@@ -34,9 +40,13 @@ namespace Assets.LeagueOfLegends
         public float MovementEndDistance;
 
         /// <summary>
-        /// Dash settings
+        /// Range settings
         /// </summary>
-        public float DashMinRange;
+        public float TargetMinRange;
+
+        /// <summary>
+        /// Max dash range
+        /// </summary>
         public float DashMaxRange;
 
         /// <summary>
@@ -45,9 +55,27 @@ namespace Assets.LeagueOfLegends
         public float ERange;
 
         /// <summary>
+        /// Ult's max range
+        /// </summary>
+        public float RRange;
+
+        /// <summary>
         /// Prefab for the Q projectile
         /// </summary>
         public Projectile QProjectilePrefab;
+        #endregion
+
+        /// <summary>
+        /// If LeeSin can R right now
+        /// </summary>
+        public bool InRRange
+        {
+            get
+            {
+                var xDiff = this.Mundo.transform.position.x - this.transform.position.x;
+                return (Math.Abs(xDiff) < this.RRange && (xDiff > 0 == this._isFacingRight));
+            }
+        }
 
         /// <summary>
         /// The target
@@ -88,6 +116,11 @@ namespace Assets.LeagueOfLegends
         /// The control schema
         /// </summary>
         private InputNames _controls;
+
+        /// <summary>
+        /// A list of enemies hit by LeeSin's E
+        /// </summary>
+        private List<EnemyController> _enemiesHitByE;
 
         /// <summary>
         /// When the Q landed
@@ -147,8 +180,8 @@ namespace Assets.LeagueOfLegends
             if (!this.Effects.TryGetValue(EffectEnum.WCoolDown, out wCoolDown))
             {
                 var targets = DashTarget.Targets;
-                float minSearch = this._isFacingRight ? this.DashMinRange : -this.DashMaxRange;
-                float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.DashMinRange;
+                float minSearch = this._isFacingRight ? this.TargetMinRange : -this.DashMaxRange;
+                float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.TargetMinRange;
 
                 DashTarget winner = null;
                 float? closest = null;
@@ -191,16 +224,38 @@ namespace Assets.LeagueOfLegends
             float eCooldown;
             if (!this.Effects.TryGetValue(EffectEnum.ECoolDown, out eCooldown))
             {
+                this._enemiesHitByE = new List<EnemyController>();
                 foreach (var enemy in EnemyController.Enemies)
                 {
                     var xDiff = enemy.transform.position.x - this.transform.position.x;
                     if (Math.Abs(xDiff) < this.ERange)
                     {
-                        enemy.ApplyEffect(EffectEnum.Slow, 2.0f);
+                        this._enemiesHitByE.Add(enemy);
                     }
                 }
 
+                this._animator.SetBool("HitE", true);
+                this.ApplyEffect(EffectEnum.Snare, 0.5f);
                 this.ApplyEffect(EffectEnum.ECoolDown, 3.0f);
+            }
+            else if (!this.HasEffect(EffectEnum.ESecondaryCooldown))
+            {
+                foreach (var enemy in this._enemiesHitByE)
+                {
+                    enemy.ApplyEffect(EffectEnum.Slow, 2.0f);
+                }
+                this.ApplyEffect(EffectEnum.ESecondaryCooldown, eCooldown);
+            }
+        }
+
+        /// <summary>
+        /// Called when the user presses R
+        /// </summary>
+        private void OnPressR()
+        {
+            if (this.InRRange)
+            {
+                this.Mundo.ApplyEffect(this._isFacingRight ? EffectEnum.Knockforward : EffectEnum.Knockback, 0.5f);
             }
         }
 
@@ -224,6 +279,7 @@ namespace Assets.LeagueOfLegends
         protected override void Update()
         {
             this._animator.SetBool("HitQ", false);
+            this._animator.SetBool("HitE", false);
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -232,6 +288,14 @@ namespace Assets.LeagueOfLegends
             if (Input.GetKeyDown(KeyCode.W))
             {
                 this.OnPressW();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                this.OnPressE();
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                this.OnPressR();
             }
 
             // Check if resonating strike is happening
