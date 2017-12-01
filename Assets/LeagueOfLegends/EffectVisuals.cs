@@ -32,13 +32,16 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         protected void Update()
         {
-            if (TargetCharacter.HasEffect(this.TargetEffect))
+            if (TargetCharacter != null)
             {
-                this.transform.position = this.TargetCharacter.transform.position;
-            }
-            else
-            {
-                Destroy(this.gameObject);
+                if (TargetCharacter.HasEffect(this.TargetEffect))
+                {
+                    this.transform.position = this.TargetCharacter.transform.position;
+                }
+                else
+                {
+                    Destroy(this.gameObject);
+                }
             }
         }
     }

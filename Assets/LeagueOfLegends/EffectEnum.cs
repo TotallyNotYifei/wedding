@@ -16,6 +16,7 @@ namespace Assets.LeagueOfLegends
         LuxShiled,
         LeeShield,
         LeeQLanded,
+        LeeELanded,
         LeeWSecondary,
         Knockback,
         Knockforward,

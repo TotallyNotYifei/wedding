@@ -20,50 +20,85 @@ namespace Assets.LeagueOfLegends
     {
         #region Unity Editor links
         /// <summary>
-        /// The mundo
+        /// The one and only Mundo controller
         /// </summary>
         public MundoController Mundo;
-
-        /// <summary>
-        /// Speed of the resonating strike
-        /// </summary>
-        public float ResonatingStrikeSpeed;
-
-        /// <summary>
-        /// How fast LeeSin's W goes
-        /// </summary>
-        public float DashSpeed;
-
-        /// <summary>
-        /// The distance that will consider resonating strike done
-        /// </summary>
-        public float MovementEndDistance;
-
-        /// <summary>
-        /// Range settings
-        /// </summary>
-        public float TargetMinRange;
-
-        /// <summary>
-        /// Max dash range
-        /// </summary>
-        public float DashMaxRange;
-
-        /// <summary>
-        /// Range of the initial E skill
-        /// </summary>
-        public float ERange;
-
-        /// <summary>
-        /// Ult's max range
-        /// </summary>
-        public float RRange;
 
         /// <summary>
         /// Prefab for the Q projectile
         /// </summary>
         public Projectile QProjectilePrefab;
+
+        /// <summary>
+        /// The effect left on the ground when Lee Sin Qs
+        /// </summary>
+        public GameObject QGroundEffect;
+
+        /// <summary>
+        /// The W effect visuals
+        /// </summary>
+        public EffectVisuals WEffect;
+
+        /// <summary>
+        /// THe effect left on the ground when Lee Sin Ws
+        /// </summary>
+        public GameObject WGroundEffect;
+
+        /// <summary>
+        /// Visual effect for LeeSin W's second cast
+        /// </summary>
+        public EffectVisuals WSecondaryEffect;
+
+        /// <summary>
+        /// Effect when LeeSin casts E
+        /// </summary>
+        public GameObject EGroundEffect;
+
+        /// <summary>
+        /// The effect visuals for E
+        /// </summary>
+        public EffectVisuals EEffect;
+
+        /// <summary>
+        /// The effect visuals for the second cast of E
+        /// </summary>
+        public EffectVisuals ESecondaryEffect;
+
+        /// <summary>
+        /// Effect when LeeSin casts R
+        /// </summary>
+        public GameObject REffect;
         #endregion
+
+        public DashTarget ClosestDashTarget
+        {
+            get
+            {
+                var targets = DashTarget.Targets;
+                float minSearch = this._isFacingRight ? Config.LeeSin.TargetMinRange : -Config.LeeSin.DashMaxRange;
+                float maxSearch = this._isFacingRight ? Config.LeeSin.DashMaxRange : -Config.LeeSin.TargetMinRange;
+
+                DashTarget winner = null;
+                float? closest = null;
+                foreach (var target in targets)
+                {
+                    var xDiff = target.transform.position.x - this.transform.position.x;
+
+                    // Check if target is in range
+                    if (minSearch < xDiff && xDiff < maxSearch)
+                    {
+                        // Compared to winner
+                        if (closest == null || Math.Abs(xDiff) < closest)
+                        {
+                            winner = target;
+                            closest = Math.Abs(xDiff);
+                        }
+                    }
+                }
+
+                return winner;
+            }
+        }
 
         /// <summary>
         /// If LeeSin can R right now
@@ -73,14 +108,14 @@ namespace Assets.LeagueOfLegends
             get
             {
                 var xDiff = this.Mundo.transform.position.x - this.transform.position.x;
-                return (Math.Abs(xDiff) < this.RRange && (xDiff > 0 == this._isFacingRight));
+                return (Math.Abs(xDiff) < Config.LeeSin.RRange && (xDiff > 0 == this._isFacingRight));
             }
         }
 
         /// <summary>
         /// The target
         /// </summary>
-        private GameObject _Qtarget;
+        private EnemyController _Qtarget;
 
         /// <summary>
         /// If LeeSin si in the middle of resonating strike
@@ -127,7 +162,8 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         public void OnQLanded(EnemyController enemy)
         {
-            this._Qtarget = enemy.gameObject;
+            enemy.TakeDamage(Config.LeeSin.QDamage);
+            this._Qtarget = enemy;
         }
 
         /// <summary>
@@ -179,27 +215,7 @@ namespace Assets.LeagueOfLegends
             float wCoolDown;
             if (!this.Effects.TryGetValue(EffectEnum.WCoolDown, out wCoolDown))
             {
-                var targets = DashTarget.Targets;
-                float minSearch = this._isFacingRight ? this.TargetMinRange : -this.DashMaxRange;
-                float maxSearch = this._isFacingRight ? this.DashMaxRange : -this.TargetMinRange;
-
-                DashTarget winner = null;
-                float? closest = null;
-                foreach (var target in targets)
-                {
-                    var xDiff = target.transform.position.x - this.transform.position.x;
-
-                    // Check if target is in range
-                    if (minSearch < xDiff && xDiff < maxSearch)
-                    {
-                        // Compared to winner
-                        if (closest == null || Math.Abs(xDiff) < closest)
-                        {
-                            winner = target;
-                            closest = Math.Abs(xDiff);
-                        }
-                    }
-                }
+                var winner = this.ClosestDashTarget;
 
                 if (winner != null)
                 {
@@ -228,9 +244,11 @@ namespace Assets.LeagueOfLegends
                 foreach (var enemy in EnemyController.Enemies)
                 {
                     var xDiff = enemy.transform.position.x - this.transform.position.x;
-                    if (Math.Abs(xDiff) < this.ERange)
+                    if (Math.Abs(xDiff) < Config.LeeSin.ERange)
                     {
                         this._enemiesHitByE.Add(enemy);
+                        enemy.TakeDamage(Config.LeeSin.EDamage);
+                        enemy.ApplyEffect(EffectEnum.LeeELanded, 2.0f);
                     }
                 }
 
@@ -253,9 +271,11 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressR()
         {
-            if (this.InRRange)
+            if (this.InRRange && !this.HasEffect(EffectEnum.RCoolDown))
             {
+                this.Mundo.TakeDamage(Config.LeeSin.RDamage);
                 this.Mundo.ApplyEffect(this._isFacingRight ? EffectEnum.Knockforward : EffectEnum.Knockback, 0.5f);
+                this.ApplyEffect(EffectEnum.RCoolDown, 10.0f);
             }
         }
 
@@ -301,12 +321,13 @@ namespace Assets.LeagueOfLegends
             // Check if resonating strike is happening
             if (this._Qtarget != null && this._isResonating)
             {
-                var movementThisFrame = this.ResonatingStrikeSpeed * Time.deltaTime;
+                var movementThisFrame = Config.LeeSin.ResonatingStrikeSpeed * Time.deltaTime;
                 var xDiff = this._Qtarget.transform.position.x - this.transform.position.x;
                 this._isFacingRight = xDiff > 0;
                 this._sprite.flipX = !this._isFacingRight;
-                if (Math.Abs(xDiff) < MovementEndDistance)
+                if (Math.Abs(xDiff) < Config.LeeSin.MovementEndDistance)
                 {
+                    this._Qtarget.TakeDamage(Config.LeeSin.QSecondaryDamage);
                     this._Qtarget = null;
                     this._isResonating = false;
                     this._animator.SetBool("Resonating", false);
@@ -321,12 +342,18 @@ namespace Assets.LeagueOfLegends
             // Check if W dash is happening
             else if (this._WTarget != null && this._isDashing)
             {
-                var movementThisFrame = this.DashSpeed * Time.deltaTime;
+                var movementThisFrame = Config.LeeSin.DashSpeed * Time.deltaTime;
                 var xDiff = this._WTarget.transform.position.x - this.transform.position.x;
                 this._isFacingRight = xDiff > 0;
                 this._sprite.flipX = !this._isFacingRight;
-                if (Math.Abs(xDiff) < MovementEndDistance)
+                if (Math.Abs(xDiff) < Config.LeeSin.MovementEndDistance)
                 {
+                    // Reached destination of dash
+                    var selfEffect = Instantiate(this.WEffect).GetComponent<EffectVisuals>();
+                    selfEffect.TargetCharacter = this;
+                    var otherEffect = Instantiate(this.WEffect);
+                    otherEffect.transform.position = this._WTarget.transform.position;
+
                     this._WTarget = null;
                     this._isDashing = false;
                     this._animator.SetBool("Dashing", false);
