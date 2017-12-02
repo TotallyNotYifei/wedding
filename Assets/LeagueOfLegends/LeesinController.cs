@@ -296,7 +296,11 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPlaceWard()
         {
-            this.PlaceWard(this._isFacingRight);
+            if (!this.HasEffect(EffectEnum.WardCoolDown))
+            {
+                this.PlaceWard(this._isFacingRight);
+                this.ApplyEffect(EffectEnum.WardCoolDown, Config.WardCooldown);
+            }
         }
 
         /// <summary>
@@ -338,7 +342,7 @@ namespace Assets.LeagueOfLegends
             {
                 this.OnPressR();
             }
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (!this._isResonating && Input.GetKey(KeyCode.Z))
             {
                 this.OnPlaceWard();
             }

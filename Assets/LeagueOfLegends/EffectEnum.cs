@@ -26,6 +26,7 @@ namespace Assets.LeagueOfLegends
         WSecondaryCooldown,
         ECoolDown,
         ESecondaryCooldown,
-        RCoolDown
+        RCoolDown,
+        WardCoolDown
     }
 }

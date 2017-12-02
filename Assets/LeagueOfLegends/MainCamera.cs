@@ -51,12 +51,13 @@ namespace Assets.LeagueOfLegends
         /// <summary>
         /// Called once per frame
         /// </summary>
-        protected void Update()
+        protected void FixedUpdate()
         {
             var minX = this.WatchItems.Min(item => { return item.transform.position.x; });
             var maxX = this.WatchItems.Max(item => { return item.transform.position.x; });
 
-            this.transform.position = new Vector3((minX + maxX) / 2, this._defaultY, this._defaultZ);
+            var oldpos = this.transform.position;
+            this.transform.position = Vector3.Lerp(oldpos, new Vector3((minX + maxX) / 2, this._defaultY, this._defaultZ), 0.5f);
             this._camera.orthographicSize = Math.Max((maxX - minX) * this.DistanceToSizeScale, 3);
         }
     }

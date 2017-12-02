@@ -90,6 +90,6 @@ namespace Assets.LeagueOfLegends
         /// <summary>
         /// How long the wards last
         /// </summary>
-        public const float WardDuration = 10.0f;
+        public const float WardCooldown = 6.0f;
     }
 }
