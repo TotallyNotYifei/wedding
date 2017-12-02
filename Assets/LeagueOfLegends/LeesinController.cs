@@ -285,6 +285,21 @@ namespace Assets.LeagueOfLegends
         }
 
         /// <summary>
+        /// Called when the user auto attacks
+        /// </summary>
+        private void OnAutoAttack()
+        {
+        }
+
+        /// <summary>
+        /// Called when the user places a ward
+        /// </summary>
+        private void OnPlaceWard()
+        {
+            this.PlaceWard(this._isFacingRight);
+        }
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected override void Start()
@@ -322,6 +337,10 @@ namespace Assets.LeagueOfLegends
             if (Input.GetKeyDown(KeyCode.R))
             {
                 this.OnPressR();
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                this.OnPlaceWard();
             }
 
             // Check if resonating strike is happening

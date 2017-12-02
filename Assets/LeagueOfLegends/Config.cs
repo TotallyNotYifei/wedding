@@ -39,7 +39,7 @@ namespace Assets.LeagueOfLegends
             /// <summary>
             /// Max dash range
             /// </summary>
-            public const float DashMaxRange = 2.0f;
+            public const float DashMaxRange = 3.5f;
 
             /// <summary>
             /// Range of the initial E skill
@@ -85,7 +85,7 @@ namespace Assets.LeagueOfLegends
         /// <summary>
         /// How far away the wards are placed
         /// </summary>
-        public const float WardPlacementRange = 3.0f;
+        public const float WardPlacementRange = 2.5f;
 
         /// <summary>
         /// How long the wards last

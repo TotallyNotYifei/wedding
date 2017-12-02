@@ -1,5 +1,5 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="HpBar.cs">
+//  <copyright file="Background.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
@@ -13,23 +13,26 @@ namespace Assets.Scripts.Shared
     using UnityEngine;
 
     /// <summary>
-    /// The HP bar
+    /// Describes the game background
     /// </summary>
-    public class HpBar : MonoBehaviour
+    public class Background : MonoBehaviour
     {
         /// <summary>
-        /// Game object for the actual hp bar
+        /// The background's movement scale compared to the camera
         /// </summary>
-        public GameObject BarObject;
+        public float MovementScale;
 
         /// <summary>
-        /// Sets a new ratio to the HP bar
+        /// The main camera
         /// </summary>
-        /// <param name="newRatio">New ratio</param>
-        public void setRatio(float newRatio)
+        public GameObject MainCamera;
+
+        /// <summary>
+        /// Called once per frame
+        /// </summary>
+        protected void Update()
         {
-            this.BarObject.transform.localScale = new Vector3(newRatio, 1, 1);
-            this.BarObject.transform.localPosition = new Vector3(-0.5f + newRatio / 2, 0, 0);
+            this.transform.position = this.MainCamera.transform.position * this.MovementScale;
         }
     }
 }

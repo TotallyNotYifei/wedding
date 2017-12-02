@@ -6,6 +6,7 @@
 
 namespace Assets.LeagueOfLegends
 {
+    using Scripts.Shared;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -41,6 +42,11 @@ namespace Assets.LeagueOfLegends
         /// Effect for placing a ward
         /// </summary>
         public Projectile WardPlacementEffect;
+
+        /// <summary>
+        /// The HP bar game object
+        /// </summary>
+        public HpBar HpBarObject;
 
         /// <summary>
         /// A dictionary of active effects =>  duration left
@@ -109,11 +115,11 @@ namespace Assets.LeagueOfLegends
             var newWard = Instantiate(this.WardPrefab);
             var xDiff = isFacingRight ? Config.WardPlacementRange : -Config.WardPlacementRange;
             newWard.transform.position = this.transform.position + new Vector3(xDiff, 0);
-            var effect = Instantiate(this.WardPlacementEffect).GetComponent<Projectile>();
-            if (!isFacingRight)
-            {
-                effect.Velocity *= -1;
-            }
+            //var effect = Instantiate(this.WardPlacementEffect).GetComponent<Projectile>();
+            //if (!isFacingRight)
+            //{
+            //    effect.Velocity *= -1;
+            //}
         }
 
         /// <summary>
@@ -144,6 +150,8 @@ namespace Assets.LeagueOfLegends
                     Effects[key] -= Time.deltaTime;
                 }
             }
+
+            this.HpBarObject.setRatio((float)this.CurrentHP / this.TotalHP);
         }
     }
 }
