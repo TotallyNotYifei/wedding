@@ -23,6 +23,16 @@ namespace Assets.LeagueOfLegends
         public EffectEnum CarriedEffect;
 
         /// <summary>
+        /// The visual that will display when the target is hit
+        /// </summary>
+        public EffectVisuals EffectVisualPrefab;
+
+        /// <summary>
+        /// How long the effect will last
+        /// </summary>
+        public float EffectDuration;
+
+        /// <summary>
         /// Speed of the projectile in units  per second
         /// </summary>
         public float Velocity;

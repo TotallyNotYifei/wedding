@@ -47,6 +47,14 @@ namespace Assets.LeagueOfLegends
                     LeeSin.OnQLanded(this);
                     Destroy(p.gameObject);
                 }
+
+                if (p.EffectVisualPrefab != null)
+                {
+                    var newEffect = Instantiate(p.EffectVisualPrefab);
+                    newEffect.TargetCharacter = this;
+                    newEffect.TargetEffect = p.CarriedEffect;
+                    this.ApplyEffect(p.CarriedEffect, p.EffectDuration);
+                }
             }
         }
 

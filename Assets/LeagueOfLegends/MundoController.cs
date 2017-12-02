@@ -18,7 +18,7 @@ namespace Assets.LeagueOfLegends
     public class MundoController : EnemyController
     {
         /// <summary>
-        /// The sprite rendere
+        /// The sprite renderer
         /// </summary>
         private Animator _animator;
 

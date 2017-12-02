@@ -181,8 +181,11 @@ namespace Assets.LeagueOfLegends
             var canFireQ = !this.HasEffect(EffectEnum.QCoolDown);
             if (this._Qtarget != null)
             {
+                this._Qtarget.GetComponent<EnemyController>().RemoveEffec(EffectEnum.LeeQLanded);
                 if (!canFireQ)
                 {
+                    var newQGround = Instantiate(this.QGroundEffect);
+                    newQGround.transform.position = this.transform.position;
                     this._animator.SetBool("Resonating", true);
                     this._isResonating = true;
                 }
@@ -200,7 +203,6 @@ namespace Assets.LeagueOfLegends
                 newQ.transform.position = this.transform.position;
                 newQ.Velocity = this._isFacingRight ? 15 : -15;
                 newQ.Duration = 0.5f;
-                newQ.CarriedEffect = EffectEnum.LeeQLanded;
                 this._animator.SetBool("HitQ", true);
                 this.ApplyEffect(EffectEnum.Snare, 0.2f);
                 this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
@@ -219,6 +221,8 @@ namespace Assets.LeagueOfLegends
 
                 if (winner != null)
                 {
+                    var newWGround = Instantiate(this.WGroundEffect);
+                    newWGround.transform.position = this.transform.position;
                     this._animator.SetBool("Dashing", true);
                     this._WTarget = winner.gameObject;
                     this._isDashing = true;
@@ -273,6 +277,7 @@ namespace Assets.LeagueOfLegends
         {
             if (this.InRRange && !this.HasEffect(EffectEnum.RCoolDown))
             {
+                this._animator.SetBool("HitR", true);
                 this.Mundo.TakeDamage(Config.LeeSin.RDamage);
                 this.Mundo.ApplyEffect(this._isFacingRight ? EffectEnum.Knockforward : EffectEnum.Knockback, 0.5f);
                 this.ApplyEffect(EffectEnum.RCoolDown, 10.0f);
@@ -300,6 +305,7 @@ namespace Assets.LeagueOfLegends
         {
             this._animator.SetBool("HitQ", false);
             this._animator.SetBool("HitE", false);
+            this._animator.SetBool("HitR", false);
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -357,6 +363,7 @@ namespace Assets.LeagueOfLegends
                     this._WTarget = null;
                     this._isDashing = false;
                     this._animator.SetBool("Dashing", false);
+                    this.ApplyEffect(EffectEnum.LeeShield, 3.0f);
                     this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
                 }
                 else
