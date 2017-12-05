@@ -46,7 +46,33 @@ namespace Assets.Overcooked
         /// </summary>
         protected void Update()
         {
+            var stickX = 0;
+            var stickY = 0;
 
+            if (Input.GetKey(KeyCode.D))
+            {
+                stickX = 1;
+                this.CurrentlyFacing = DirectionEnum.Right;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                stickX = -11;
+                this.CurrentlyFacing = DirectionEnum.Left;
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                stickY = 1;
+                this.CurrentlyFacing = DirectionEnum.Up;
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                stickY = -1;
+                this.CurrentlyFacing = DirectionEnum.Down;
+            }
+
+            var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
+            this.transform.position += movementThisFrame;
         }
     }
 }

@@ -17,11 +17,29 @@ namespace Assets.Overcooked
     /// </summary>
     public class Ingredient : Holdable
     {
-        public 
+        /// <summary>
+        /// The ingredient
+        /// </summary>
+        public IngredientEnum IngredientType;
 
         /// <summary>
         /// If the ingredient has been chopped on a chopping board
         /// </summary>
-        public bool IsChopped;
+        public bool IsChopped
+        {
+            get
+            {
+                return this._isChopped;
+            }
+            set
+            {
+                this._isChopped = value;
+            }
+        }
+
+        /// <summary>
+        /// If the ingrient is chopped
+        /// </summary>
+        private bool _isChopped;
     }
 }
