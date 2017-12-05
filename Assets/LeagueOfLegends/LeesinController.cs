@@ -253,6 +253,8 @@ namespace Assets.LeagueOfLegends
                         this._enemiesHitByE.Add(enemy);
                         enemy.TakeDamage(Config.LeeSin.EDamage);
                         enemy.ApplyEffect(EffectEnum.LeeELanded, 2.0f);
+                        var newEEffect = Instantiate(this.EEffect);
+                        newEEffect.GetComponent<EffectVisuals>().TargetCharacter = enemy;
                     }
                 }
 
