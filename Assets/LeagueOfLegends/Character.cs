@@ -69,6 +69,11 @@ namespace Assets.LeagueOfLegends
         protected SpriteRenderer _sprite;
 
         /// <summary>
+        /// If the character is facing to the right
+        /// </summary>
+        protected bool _isFacingRight;
+
+        /// <summary>
         /// Removes the given effect
         /// </summary>
         /// <param name="effect">Target effect for removal</param>
@@ -142,6 +147,7 @@ namespace Assets.LeagueOfLegends
             this._animator = this.GetComponent<Animator>();
             this._sprite = this.GetComponent<SpriteRenderer>();
             this.CurrentHP = this.TotalHP;
+            this._isFacingRight = true;
         }
 
         /// <summary>

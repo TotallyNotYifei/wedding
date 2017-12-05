@@ -133,11 +133,6 @@ namespace Assets.LeagueOfLegends
         private bool _isDashing;
 
         /// <summary>
-        /// If Lee Sin is facing right
-        /// </summary>
-        private bool _isFacingRight;
-
-        /// <summary>
         /// The control schema
         /// </summary>
         private InputNames _controls;
@@ -191,8 +186,11 @@ namespace Assets.LeagueOfLegends
             {
                 var newQ = Instantiate(this.QProjectilePrefab.gameObject).GetComponent<Projectile>();
                 newQ.transform.position = this.transform.position;
-                newQ.Velocity = this._isFacingRight ? 15 : -15;
-                newQ.Duration = 0.5f;
+                if (!this._isFacingRight)
+                {
+                    newQ.Velocity *=-1;
+                }
+
                 this._animator.SetBool("HitQ", true);
                 this.ApplyEffect(EffectEnum.Snare, 0.2f);
                 this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
@@ -301,8 +299,6 @@ namespace Assets.LeagueOfLegends
         protected override void Start()
         {
             this._controls = BurneyController.ControlSchema;
-
-            this._isFacingRight = true;
 
             base.Start();
         }

@@ -39,21 +39,25 @@ namespace Assets.LeagueOfLegends
         /// <param name="collision">The collision</param>
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
-            Projectile p = collision.gameObject.GetComponent<Projectile>();
-            if (p != null)
+            Projectile proj = collision.gameObject.GetComponent<Projectile>();
+            if (proj != null)
             {
-                if (p.CarriedEffect == EffectEnum.LeeQLanded)
+                if (proj.CarriedEffect == EffectEnum.LeeQLanded)
                 {
                     LeeSin.OnQLanded(this);
-                    Destroy(p.gameObject);
+                    Destroy(proj.gameObject);
+                }
+                else
+                {
+                    this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
                 }
 
-                if (p.EffectVisualPrefab != null)
+                if (proj.EffectVisualPrefab != null)
                 {
-                    var newEffect = Instantiate(p.EffectVisualPrefab);
+                    var newEffect = Instantiate(proj.EffectVisualPrefab);
                     newEffect.TargetCharacter = this;
-                    newEffect.TargetEffect = p.CarriedEffect;
-                    this.ApplyEffect(p.CarriedEffect, p.EffectDuration);
+                    newEffect.TargetEffect = proj.CarriedEffect;
+                    this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
                 }
             }
         }

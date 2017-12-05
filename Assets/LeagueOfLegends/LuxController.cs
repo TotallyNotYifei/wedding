@@ -17,15 +17,38 @@ namespace Assets.LeagueOfLegends
     /// </summary>
     public class LuxController : Character
     {
+        #region Unity Editor links
+        /// <summary>
+        /// Fired projectiles
+        /// </summary>
+        public Projectile QProjectile;
+        public Projectile WProjectile;
+        public Projectile EProjectile;
+
+        #endregion
         /// <summary>
         /// LeeSin
         /// </summary>
         public LeesinController LeeSin;
 
         /// <summary>
-        /// If the character is facing to the right
+        /// When the character presses Q
         /// </summary>
-        private bool _isFacingRight;
+        private void OnPressQ()
+        {
+            if (this.HasEffect(EffectEnum.QCoolDown))
+            {
+                return;
+            }
+
+            var newQProj = Instantiate(this.QProjectile);
+            newQProj.transform.position = this.transform.position;
+            this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+            if (!this._isFacingRight)
+            {
+                newQProj.GetComponent<Projectile>().Velocity *= -1;
+            }
+        }
 
         protected override void Start()
         {
@@ -47,6 +70,11 @@ namespace Assets.LeagueOfLegends
                 stickX = 1;
                 this._sprite.flipX = false;
                 this._isFacingRight = true;
+            }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                this.OnPressQ();
             }
 
             this._animator.SetBool("IsMoving", stickX != 0);
