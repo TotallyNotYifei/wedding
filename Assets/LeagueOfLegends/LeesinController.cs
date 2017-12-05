@@ -138,16 +138,6 @@ namespace Assets.LeagueOfLegends
         private bool _isFacingRight;
 
         /// <summary>
-        /// The sprite renderer
-        /// </summary>
-        private SpriteRenderer _sprite;
-
-        /// <summary>
-        /// The animator component
-        /// </summary>
-        private Animator _animator;
-
-        /// <summary>
         /// The control schema
         /// </summary>
         private InputNames _controls;
@@ -310,9 +300,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         protected override void Start()
         {
-            this._sprite = this.GetComponent<SpriteRenderer>();
             this._controls = BurneyController.ControlSchema;
-            this._animator = this.GetComponent<Animator>();
 
             this._isFacingRight = true;
 

@@ -59,6 +59,16 @@ namespace Assets.LeagueOfLegends
         protected Rigidbody2D _rgbd;
 
         /// <summary>
+        /// The animator component
+        /// </summary>
+        protected Animator _animator;
+
+        /// <summary>
+        /// The sprite renderer
+        /// </summary>
+        protected SpriteRenderer _sprite;
+
+        /// <summary>
         /// Removes the given effect
         /// </summary>
         /// <param name="effect">Target effect for removal</param>
@@ -129,6 +139,8 @@ namespace Assets.LeagueOfLegends
         {
             this.Effects = new Dictionary<EffectEnum, float>();
             this._rgbd = this.GetComponent<Rigidbody2D>();
+            this._animator = this.GetComponent<Animator>();
+            this._sprite = this.GetComponent<SpriteRenderer>();
             this.CurrentHP = this.TotalHP;
         }
 
