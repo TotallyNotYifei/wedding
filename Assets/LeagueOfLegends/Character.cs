@@ -74,6 +74,16 @@ namespace Assets.LeagueOfLegends
         protected bool _isFacingRight;
 
         /// <summary>
+        /// If the unit is friendly
+        /// </summary>
+        protected virtual bool IsFriendly { get { return true; } }
+
+        /// <summary>
+        /// The currently active shield effect
+        /// </summary>
+        private GameObject _luxShieldEffect;
+
+        /// <summary>
         /// Removes the given effect
         /// </summary>
         /// <param name="effect">Target effect for removal</param>
@@ -170,6 +180,27 @@ namespace Assets.LeagueOfLegends
             }
 
             this.HpBarObject.setRatio((float)this.CurrentHP / this.TotalHP);
+        }
+
+        /// <summary>
+        /// Called when the trigger enters
+        /// </summary>
+        /// <param name="collision">The collision</param>
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
+        {
+            var proj = collision.gameObject.GetComponent<LuxWProjectile>();
+            if (proj != null && !this.IsFriendly)
+            {
+                var newEffect = Instantiate(proj.ShieldEffectPrefab.gameObject).GetComponent<EffectVisuals>();
+                newEffect.TargetCharacter = this;
+                this.ApplyEffect(EffectEnum.LuxShiled, Config.Lux.ShieldDuration);
+                if (this._luxShieldEffect != null)
+                {
+                    Destroy(this._luxShieldEffect);
+                }
+
+                this._luxShieldEffect = newEffect.gameObject;
+            }
         }
     }
 }

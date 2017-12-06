@@ -22,6 +22,14 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         public static List<EnemyController> Enemies = new List<EnemyController>();
 
+        protected override bool IsFriendly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Used for initialization
         /// </summary>
@@ -37,7 +45,7 @@ namespace Assets.LeagueOfLegends
         /// When a trigger enters
         /// </summary>
         /// <param name="collision">The collision</param>
-        protected virtual void OnTriggerEnter2D(Collider2D collision)
+        protected override void OnTriggerEnter2D(Collider2D collision)
         {
             Projectile proj = collision.gameObject.GetComponent<Projectile>();
             if (proj != null)
@@ -60,6 +68,8 @@ namespace Assets.LeagueOfLegends
                     this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
                 }
             }
+
+            base.OnTriggerEnter2D(collision);
         }
 
         /// <summary>

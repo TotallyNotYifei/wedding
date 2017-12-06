@@ -83,6 +83,22 @@ namespace Assets.LeagueOfLegends
         }
 
         /// <summary>
+        /// All Lux related configurations
+        /// </summary>
+        public static class Lux
+        {
+            /// <summary>
+            /// How far Lux/Leesin will have to be to the projectile so they'll receive the shield
+            /// </summary>
+            public const float WApplyShieldRange = 0.5f;
+
+            /// <summary>
+            /// How long the lux's shield lasts
+            /// </summary>
+            public const float ShieldDuration = 2.5f;
+        }
+
+        /// <summary>
         /// How far away the wards are placed
         /// </summary>
         public const float WardPlacementRange = 2.5f;
