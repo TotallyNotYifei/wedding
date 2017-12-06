@@ -22,13 +22,19 @@ namespace Assets.LeagueOfLegends
         /// Fired projectiles
         /// </summary>
         public Projectile QProjectile;
-        public Projectile EProjectile;
         public LuxWProjectile WProjectile;
-        #endregion
+        public LuxEProjectile EProjectile;
+
         /// <summary>
         /// LeeSin
         /// </summary>
         public LeesinController LeeSin;
+        #endregion
+
+        /// <summary>
+        /// The fired E projectile
+        /// </summary>
+        private LuxEProjectile _firedEProjectile;
 
         /// <summary>
         /// When the character presses Q
@@ -43,6 +49,8 @@ namespace Assets.LeagueOfLegends
             var newQProj = Instantiate(this.QProjectile);
             newQProj.transform.position = this.transform.position;
             this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+            this._animator.SetBool("HitQE", true);
+
             if (!this._isFacingRight)
             {
                 newQProj.GetComponent<Projectile>().Velocity *= -1;
@@ -67,16 +75,65 @@ namespace Assets.LeagueOfLegends
             }
             newWProj.transform.position = this.transform.position;
             this.ApplyEffect(EffectEnum.WCoolDown, Config.Lux.WCoolDown);
+            this._animator.SetBool("HitW", true);
+
+            this.ApplyEffect(EffectEnum.Snare, 0.4f);
         }
 
+        /// <summary>
+        /// Called when the player presses E
+        /// </summary>
+        private void OnPressE()
+        {
+            if (this._firedEProjectile != null)
+            {
+                this._firedEProjectile.Detonate();
+                this._firedEProjectile = null;
+            }
+
+            else if (!this.HasEffect(EffectEnum.ECoolDown))
+            {
+                var newEProj = Instantiate(this.EProjectile).GetComponent<LuxEProjectile>(); ;
+                newEProj.transform.position = this.transform.position;
+                if (!this._isFacingRight)
+                {
+                    newEProj.Velocity *= -1;
+                }
+                this.ApplyEffect(EffectEnum.ECoolDown, Config.Lux.ECoolDown);
+                this.ApplyEffect(EffectEnum.Snare, 0.4f);
+                this._animator.SetBool("HitQE", true);
+
+                this._firedEProjectile = newEProj;
+            }
+        }
+
+        /// <summary>
+        /// Called when the player presses R
+        /// </summary>
+        private void OnPressR()
+        {
+            this._animator.SetBool("HitR", true);
+            this.ApplyEffect(EffectEnum.Snare, 1.2f);
+        }
+
+        /// <summary>
+        /// Used for initialization
+        /// </summary>
         protected override void Start()
         {
             Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), this.LeeSin.GetComponent<BoxCollider2D>());
             base.Start();
         }
 
+        /// <summary>
+        /// Called once per frame
+        /// </summary>
         protected override void Update()
         {
+            this._animator.SetBool("HitQE", false);
+            this._animator.SetBool("HitW", false);
+            this._animator.SetBool("HitR", false);
+
             var stickX = 0;
             if (Input.GetKey(KeyCode.J))
             {
@@ -98,6 +155,14 @@ namespace Assets.LeagueOfLegends
             if (Input.GetKeyDown(KeyCode.I))
             {
                 this.OnPressW();
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                this.OnPressE();
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                this.OnPressR();
             }
 
             this._animator.SetBool("IsMoving", stickX != 0);

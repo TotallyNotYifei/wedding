@@ -102,7 +102,30 @@ namespace Assets.LeagueOfLegends
             /// </summary>
             public const float LuxCatchReturningWRange = 0.5f;
 
+            /// <summary>
+            /// Cooldown for the W skill
+            /// </summary>
+            public const float QCoolDown = 3.0f;
+
+            /// <summary>
+            /// Cooldown for the W skill
+            /// </summary>
             public const float WCoolDown = 3.0f;
+
+            /// <summary>
+            /// Cooldown for the W skill
+            /// </summary>
+            public const float ECoolDown = 3.0f;
+
+            /// <summary>
+            /// How much E does when detonated
+            /// </summary>
+            public const float EDamage = 350;
+
+            /// <summary>
+            /// How much damage it'll do to detonate Lux's mark
+            /// </summary>
+            public const float DetonateMarkDamage = 70;
         }
 
         /// <summary>

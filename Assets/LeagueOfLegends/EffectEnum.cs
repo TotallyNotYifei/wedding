@@ -27,6 +27,8 @@ namespace Assets.LeagueOfLegends
         ECoolDown,
         ESecondaryCooldown,
         RCoolDown,
-        WardCoolDown
+        WardCoolDown,
+        LuxMark,
+        LuxDetonate
     }
 }

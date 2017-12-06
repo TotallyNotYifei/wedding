@@ -366,6 +366,7 @@ namespace Assets.LeagueOfLegends
                     // Reached destination of dash
                     var selfEffect = Instantiate(this.WEffect).GetComponent<EffectVisuals>();
                     selfEffect.TargetCharacter = this;
+                    selfEffect.transform.position = this.transform.position;
                     var otherEffect = Instantiate(this.WEffect);
                     otherEffect.transform.position = this._WTarget.transform.position;
 
