@@ -22,9 +22,8 @@ namespace Assets.LeagueOfLegends
         /// Fired projectiles
         /// </summary>
         public Projectile QProjectile;
-        public Projectile WProjectile;
         public Projectile EProjectile;
-
+        public LuxWProjectile WProjectile;
         #endregion
         /// <summary>
         /// LeeSin
@@ -48,6 +47,26 @@ namespace Assets.LeagueOfLegends
             {
                 newQProj.GetComponent<Projectile>().Velocity *= -1;
             }
+        }
+
+        /// <summary>
+        /// Called when the user presses W
+        /// </summary>
+        private void OnPressW()
+        {
+            if (this.HasEffect(EffectEnum.WCoolDown))
+            {
+                return;
+            }
+
+            var newWProj = Instantiate(this.WProjectile).GetComponent<LuxWProjectile>();
+            newWProj.Lux = this;
+            if (!this._isFacingRight)
+            {
+                newWProj.Velocity *= -1;
+            }
+            newWProj.transform.position = this.transform.position;
+            this.ApplyEffect(EffectEnum.WCoolDown, Config.Lux.WCoolDown);
         }
 
         protected override void Start()
@@ -75,6 +94,10 @@ namespace Assets.LeagueOfLegends
             if (Input.GetKeyDown(KeyCode.U))
             {
                 this.OnPressQ();
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                this.OnPressW();
             }
 
             this._animator.SetBool("IsMoving", stickX != 0);

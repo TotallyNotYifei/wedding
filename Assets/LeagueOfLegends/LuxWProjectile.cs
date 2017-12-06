@@ -23,11 +23,6 @@ namespace Assets.LeagueOfLegends
         public LuxController Lux;
 
         /// <summary>
-        /// The real LeeSin
-        /// </summary>
-        public LeesinController Lee;
-
-        /// <summary>
         /// The speed of the projectile
         /// </summary>
         public float Velocity;
@@ -69,6 +64,13 @@ namespace Assets.LeagueOfLegends
                     this._hasReturned = true;
                 }
             }
+
+            if (this._hasReturned && Math.Abs(this.Lux.transform.position.x -this.transform.position.x) < Config.Lux.LuxCatchReturningWRange )
+            {
+                Destroy(this.gameObject);
+            }
+
+            this.transform.position += new Vector3(this.Velocity * Time.deltaTime, 0);
         }
     }
 }

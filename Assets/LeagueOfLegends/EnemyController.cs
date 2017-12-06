@@ -22,6 +22,9 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         public static List<EnemyController> Enemies = new List<EnemyController>();
 
+        /// <summary>
+        /// Override property to identify
+        /// </summary>
         protected override bool IsFriendly
         {
             get

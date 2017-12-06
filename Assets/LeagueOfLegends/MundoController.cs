@@ -18,21 +18,6 @@ namespace Assets.LeagueOfLegends
     public class MundoController : EnemyController
     {
         /// <summary>
-        /// The sprite renderer
-        /// </summary>
-        private Animator _animator;
-
-        /// <summary>
-        /// Used for initialization
-        /// </summary>
-        protected override void Start()
-        {
-            this._animator = this.GetComponent<Animator>();
-
-            base.Start();
-        }
-
-        /// <summary>
         /// Called once per frame
         /// </summary>
         protected override void Update()

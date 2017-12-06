@@ -189,7 +189,7 @@ namespace Assets.LeagueOfLegends
         protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
             var proj = collision.gameObject.GetComponent<LuxWProjectile>();
-            if (proj != null && !this.IsFriendly)
+            if (proj != null && this.IsFriendly)
             {
                 var newEffect = Instantiate(proj.ShieldEffectPrefab.gameObject).GetComponent<EffectVisuals>();
                 newEffect.TargetCharacter = this;

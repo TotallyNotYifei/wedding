@@ -96,6 +96,13 @@ namespace Assets.LeagueOfLegends
             /// How long the lux's shield lasts
             /// </summary>
             public const float ShieldDuration = 2.5f;
+
+            /// <summary>
+            /// How far the returning W have to be for Lux to catch it
+            /// </summary>
+            public const float LuxCatchReturningWRange = 0.5f;
+
+            public const float WCoolDown = 3.0f;
         }
 
         /// <summary>
