@@ -70,6 +70,10 @@ namespace Assets.LeagueOfLegends
                     newEffect.TargetEffect = proj.CarriedEffect;
                     this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
                 }
+
+                this.TakeDamage(proj.Damage);
+
+                proj.OnHittingEnemy();
             }
 
             base.OnTriggerEnter2D(collision);

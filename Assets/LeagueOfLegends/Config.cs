@@ -103,6 +103,16 @@ namespace Assets.LeagueOfLegends
             public const float LuxCatchReturningWRange = 0.5f;
 
             /// <summary>
+            /// Range for the laser
+            /// </summary>
+            public const float RRange = 12;
+
+            /// <summary>
+            /// Range for Lux's ult
+            /// </summary>
+            public const float RPlacementRage = 4.65f;
+
+            /// <summary>
             /// Cooldown for the W skill
             /// </summary>
             public const float QCoolDown = 3.0f;
@@ -118,9 +128,24 @@ namespace Assets.LeagueOfLegends
             public const float ECoolDown = 3.0f;
 
             /// <summary>
+            /// How long the ultimate's cooldown is
+            /// </summary>
+            public const float RCoolDown = 10.0f;
+
+            /// <summary>
+            /// Damage for lux's Q
+            /// </summary>
+            public const float QDamage = 240;
+
+            /// <summary>
             /// How much E does when detonated
             /// </summary>
             public const float EDamage = 350;
+
+            /// <summary>
+            /// Damage for Lux's ult
+            /// </summary>
+            public const float RDamage = 700;
 
             /// <summary>
             /// How much damage it'll do to detonate Lux's mark

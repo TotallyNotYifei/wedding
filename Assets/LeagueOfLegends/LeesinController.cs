@@ -147,7 +147,6 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         public void OnQLanded(EnemyController enemy)
         {
-            enemy.TakeDamage(Config.LeeSin.QDamage);
             this._Qtarget = enemy;
         }
 
@@ -190,6 +189,7 @@ namespace Assets.LeagueOfLegends
                 {
                     newQ.Velocity *=-1;
                 }
+                newQ.Damage = Config.LeeSin.QDamage;
 
                 this._animator.SetBool("HitQ", true);
                 this.ApplyEffect(EffectEnum.Snare, 0.2f);

@@ -24,6 +24,7 @@ namespace Assets.LeagueOfLegends
         public Projectile QProjectile;
         public LuxWProjectile WProjectile;
         public LuxEProjectile EProjectile;
+        public LuxLaser Laser;
 
         /// <summary>
         /// LeeSin
@@ -37,6 +38,20 @@ namespace Assets.LeagueOfLegends
         private LuxEProjectile _firedEProjectile;
 
         /// <summary>
+        /// Called when R fires
+        /// </summary>
+        public void OnRFire()
+        {
+            var xMin = this._isFacingRight ? 0 : -Config.Lux.RPlacementRage;
+            var xMax = this._isFacingRight ? Config.Lux.RPlacementRage : 0;
+            var enemiesInRange = EnemyController.Enemies.Where(enemy => enemy.transform.position.x > xMin && enemy.transform.position.x < xMax);
+            foreach (var enemy in enemiesInRange)
+            {
+                enemy.TakeDamage(Config.Lux.RDamage);
+            }
+        }
+
+        /// <summary>
         /// When the character presses Q
         /// </summary>
         private void OnPressQ()
@@ -47,6 +62,7 @@ namespace Assets.LeagueOfLegends
             }
 
             var newQProj = Instantiate(this.QProjectile);
+            newQProj.Damage = Config.Lux.QDamage;
             newQProj.transform.position = this.transform.position;
             this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
             this._animator.SetBool("HitQE", true);
@@ -112,8 +128,24 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressR()
         {
+            if (this.HasEffect(EffectEnum.RCoolDown))
+            {
+                return;
+            }
+
+
             this._animator.SetBool("HitR", true);
             this.ApplyEffect(EffectEnum.Snare, 1.2f);
+            this.ApplyEffect(EffectEnum.RCoolDown, Config.Lux.RCoolDown);
+            var newLaser = Instantiate(this.Laser).GetComponent<LuxLaser>();
+            newLaser.Lux = this;
+            var diffX = Config.Lux.RPlacementRage;
+            if (!this._isFacingRight)
+            {
+                diffX *= -1;
+            }
+
+            newLaser.transform.position = new Vector3(diffX + this.transform.position.x, 0, 0);
         }
 
         /// <summary>

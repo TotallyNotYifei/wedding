@@ -43,6 +43,28 @@ namespace Assets.LeagueOfLegends
         public float Duration;
 
         /// <summary>
+        /// How many targets this projectile can hit
+        /// </summary>
+        public int HitCount;
+
+        /// <summary>
+        /// How much damage this projectile can do
+        /// </summary>
+        public float Damage;
+
+        /// <summary>
+        /// Called when the projectile hits an enemy
+        /// </summary>
+        public void OnHittingEnemy()
+        {
+            this.HitCount--;
+            if (this.HitCount <= 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
+        /// <summary>
         /// Called once per frame
         /// </summary>
         protected void Update()
