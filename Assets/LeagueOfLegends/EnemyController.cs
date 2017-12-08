@@ -18,6 +18,11 @@ namespace Assets.LeagueOfLegends
         public LeesinController LeeSin;
 
         /// <summary>
+        /// The Lux controller
+        /// </summary>
+        public LuxController Lux;
+
+        /// <summary>
         /// A list  of enemies
         /// </summary>
         public static List<EnemyController> Enemies = new List<EnemyController>();
