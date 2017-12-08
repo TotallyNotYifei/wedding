@@ -56,11 +56,6 @@ namespace Assets.LeagueOfLegends
                 if (proj.CarriedEffects.Contains(EffectEnum.LeeQLanded))
                 {
                     LeeSin.OnQLanded(this);
-                    Destroy(proj.gameObject);
-                }
-                else
-                {
-                    this.ApplyEffects(proj.CarriedEffects, proj.EffectDuration);
                 }
 
                 for(int i= 0;i<proj.EffectVisualPrefabs.Count;i++)
