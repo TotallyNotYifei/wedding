@@ -46,6 +46,7 @@ namespace Assets.LeagueOfLegends
             foreach (var enemy in this.GetEnemiesInRange())
             {
                 enemy.TakeDamage(Config.Lux.EDamage);
+                enemy.ApplyEffect(EffectEnum.LuxMark, Config.Lux.MarkDuration);
             }
 
             Destroy(this.gameObject);

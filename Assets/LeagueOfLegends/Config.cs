@@ -148,6 +148,11 @@ namespace Assets.LeagueOfLegends
             public const float RDamage = 700;
 
             /// <summary>
+            /// How long the marks last for
+            /// </summary>
+            public const float MarkDuration = 4.0f;
+
+            /// <summary>
             /// How much damage it'll do to detonate Lux's mark
             /// </summary>
             public const float DetonateMarkDamage = 70;

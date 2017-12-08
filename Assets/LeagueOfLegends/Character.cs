@@ -107,6 +107,15 @@ namespace Assets.LeagueOfLegends
                     return;
                 }
             }
+            else
+            {
+                // Create new visuals
+                var visualPrefab = EffectVisualPrefabs.GetPrefab(effect);
+                if (visualPrefab != null) ;
+                var newVisual = Instantiate(visualPrefab).GetComponent<EffectVisuals>();
+                newVisual.transform.position = this.transform.position;
+                newVisual.TargetCharacter = this;
+            }
 
             this.Effects[effect] = duration;
         }
