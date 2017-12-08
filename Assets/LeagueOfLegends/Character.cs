@@ -93,10 +93,10 @@ namespace Assets.LeagueOfLegends
         }
 
         /// <summary>
-        /// Adds a debuff
+        /// Applies an effect
         /// </summary>
-        /// <param name="effect">Target debuff</param>
-        /// <param name="duration">How much total duration for the debuff</param>
+        /// <param name="effect">Target effect</param>
+        /// <param name="duration">Duration of the effect</param>
         public void ApplyEffect(EffectEnum effect, float duration)
         {
             float existingEffect;
@@ -107,17 +107,21 @@ namespace Assets.LeagueOfLegends
                     return;
                 }
             }
-            else
-            {
-                // Create new visuals
-                var visualPrefab = EffectVisualPrefabs.GetPrefab(effect);
-                if (visualPrefab != null) ;
-                var newVisual = Instantiate(visualPrefab).GetComponent<EffectVisuals>();
-                newVisual.transform.position = this.transform.position;
-                newVisual.TargetCharacter = this;
-            }
 
             this.Effects[effect] = duration;
+        }
+
+        /// <summary>
+        /// Adds a debuff
+        /// </summary>
+        /// <param name="effect">Target debuff</param>
+        /// <param name="duration">How much total duration for the debuff</param>
+        public void ApplyEffects(List<EffectEnum> effects, float duration)
+        {
+            foreach (var effect in effects)
+            {
+                this.ApplyEffect(effect, duration);
+            }
         }
 
         /// <summary>

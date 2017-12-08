@@ -36,7 +36,7 @@ namespace Assets.LeagueOfLegends
             {
                 if (TargetCharacter.HasEffect(this.TargetEffect))
                 {
-                    this.transform.position = this.TargetCharacter.transform.position;
+                    this.transform.position = new Vector3(this.TargetCharacter.transform.position.x, 0);
                 }
                 else
                 {

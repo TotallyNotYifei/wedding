@@ -20,12 +20,12 @@ namespace Assets.LeagueOfLegends
         /// <summary>
         /// The effect of this projectile
         /// </summary>
-        public EffectEnum CarriedEffect;
+        public List<EffectEnum> CarriedEffects;
 
         /// <summary>
         /// The visual that will display when the target is hit
         /// </summary>
-        public EffectVisuals EffectVisualPrefab;
+        public List<EffectVisuals> EffectVisualPrefabs;
 
         /// <summary>
         /// How long the effect will last

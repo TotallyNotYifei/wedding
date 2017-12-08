@@ -53,24 +53,29 @@ namespace Assets.LeagueOfLegends
             Projectile proj = collision.gameObject.GetComponent<Projectile>();
             if (proj != null)
             {
-                if (proj.CarriedEffect == EffectEnum.LeeQLanded)
+                if (proj.CarriedEffects.Contains(EffectEnum.LeeQLanded))
                 {
                     LeeSin.OnQLanded(this);
                     Destroy(proj.gameObject);
                 }
                 else
                 {
-                    this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
+                    this.ApplyEffects(proj.CarriedEffects, proj.EffectDuration);
                 }
 
-                if (proj.EffectVisualPrefab != null)
+                for(int i= 0;i<proj.EffectVisualPrefabs.Count;i++)
                 {
-                    var newEffect = Instantiate(proj.EffectVisualPrefab);
-                    newEffect.TargetCharacter = this;
-                    newEffect.TargetEffect = proj.CarriedEffect;
-                    this.ApplyEffect(proj.CarriedEffect, proj.EffectDuration);
+                    var effectPrefab = proj.EffectVisualPrefabs[i];
+                    if (effectPrefab != null)
+                    {
+                        var newEffect = Instantiate(proj.EffectVisualPrefabs[i]);
+                        newEffect.TargetCharacter = this;
+                        newEffect.TargetEffect = proj.CarriedEffects[i];
+                        newEffect.transform.position = new Vector3(this.transform.position.x, 0);
+                    }
                 }
 
+                this.ApplyEffects(proj.CarriedEffects, proj.EffectDuration);
                 this.TakeDamage(proj.Damage);
 
                 proj.OnHittingEnemy();
