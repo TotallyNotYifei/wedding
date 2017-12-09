@@ -87,7 +87,7 @@ namespace Assets.LeagueOfLegends
         /// Removes the given effect
         /// </summary>
         /// <param name="effect">Target effect for removal</param>
-        public void RemoveEffec(EffectEnum effect)
+        public void RemoveEffect(EffectEnum effect)
         {
             this.Effects.Remove(effect);
         }
@@ -120,7 +120,14 @@ namespace Assets.LeagueOfLegends
         {
             foreach (var effect in effects)
             {
-                this.ApplyEffect(effect, duration);
+                if (effect == EffectEnum.LuxMark)
+                {
+                    this.ApplyEffect(effect, Config.Lux.MarkDuration);
+                }
+                else
+                {
+                    this.ApplyEffect(effect, duration);
+                }
             }
         }
 
@@ -158,6 +165,32 @@ namespace Assets.LeagueOfLegends
             //{
             //    effect.Velocity *= -1;
             //}
+        }
+
+        /// <summary>
+        /// Fires a normal projectile
+        /// </summary>
+        /// <param name="projectilePrefab">Projectile prefab to be fired</param>
+        /// <param name="isFacingRight">If the character is facing right</param>
+        /// <param name="cooldownEffect">The cooldown </param>
+        /// <param name="cooldownDuration">how long the cooldown is</param>
+        /// <param name="animatorParam">Parameter for the fire animation</param>
+        protected void FireNormalProjectile(Projectile projectilePrefab, bool isFacingRight, EffectEnum cooldownEffect, float cooldownDuration, string animatorParam)
+        {
+            if (this.HasEffect(cooldownEffect))
+            {
+                return;
+            }
+
+            var newQProj = Instantiate(projectilePrefab);
+            newQProj.transform.position = this.transform.position;
+            this.ApplyEffect(cooldownEffect, cooldownDuration);
+            this._animator.SetBool(animatorParam, true);
+
+            if (!isFacingRight)
+            {
+                newQProj.GetComponent<Projectile>().Velocity *= -1;
+            }
         }
 
         /// <summary>

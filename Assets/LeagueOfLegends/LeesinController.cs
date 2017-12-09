@@ -162,10 +162,10 @@ namespace Assets.LeagueOfLegends
             }
 
             // If there's a Q target, 
-            var canFireQ = !this.HasEffect(EffectEnum.QCoolDown);
+            var canFireQ = !this.HasEffect(EffectEnum.QCooldown);
             if (this._Qtarget != null)
             {
-                this._Qtarget.GetComponent<EnemyController>().RemoveEffec(EffectEnum.LeeQLanded);
+                this._Qtarget.GetComponent<EnemyController>().RemoveEffect(EffectEnum.LeeQLanded);
                 if (!canFireQ)
                 {
                     var newQGround = Instantiate(this.QGroundEffect);
@@ -193,7 +193,7 @@ namespace Assets.LeagueOfLegends
 
                 this._animator.SetBool("HitQ", true);
                 this.ApplyEffect(EffectEnum.Snare, 0.2f);
-                this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+                this.ApplyEffect(EffectEnum.QCooldown, 3.0f);
             }
         }
 
@@ -203,7 +203,7 @@ namespace Assets.LeagueOfLegends
         private void OnPressW()
         {
             float wCoolDown;
-            if (!this.Effects.TryGetValue(EffectEnum.WCoolDown, out wCoolDown))
+            if (!this.Effects.TryGetValue(EffectEnum.WCooldown, out wCoolDown))
             {
                 var winner = this.ClosestDashTarget;
 
@@ -214,7 +214,7 @@ namespace Assets.LeagueOfLegends
                     this._animator.SetBool("Dashing", true);
                     this._WTarget = winner.gameObject;
                     this._isDashing = true;
-                    this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
+                    this.ApplyEffect(EffectEnum.WCooldown, 3.0f);
                 }
             }
             else if (!this.HasEffect(EffectEnum.WSecondaryCooldown))
@@ -230,7 +230,7 @@ namespace Assets.LeagueOfLegends
         private void OnPressE()
         {
             float eCooldown;
-            if (!this.Effects.TryGetValue(EffectEnum.ECoolDown, out eCooldown))
+            if (!this.Effects.TryGetValue(EffectEnum.ECooldown, out eCooldown))
             {
                 this._enemiesHitByE = new List<EnemyController>();
                 foreach (var enemy in EnemyController.Enemies)
@@ -248,7 +248,7 @@ namespace Assets.LeagueOfLegends
 
                 this._animator.SetBool("HitE", true);
                 this.ApplyEffect(EffectEnum.Snare, 0.5f);
-                this.ApplyEffect(EffectEnum.ECoolDown, 3.0f);
+                this.ApplyEffect(EffectEnum.ECooldown, 3.0f);
             }
             else if (!this.HasEffect(EffectEnum.ESecondaryCooldown))
             {
@@ -265,12 +265,12 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressR()
         {
-            if (this.InRRange && !this.HasEffect(EffectEnum.RCoolDown))
+            if (this.InRRange && !this.HasEffect(EffectEnum.RCooldown))
             {
                 this._animator.SetBool("HitR", true);
                 this.Mundo.TakeDamage(Config.LeeSin.RDamage);
                 this.Mundo.ApplyEffect(this._isFacingRight ? EffectEnum.Knockforward : EffectEnum.Knockback, 0.5f);
-                this.ApplyEffect(EffectEnum.RCoolDown, 10.0f);
+                this.ApplyEffect(EffectEnum.RCooldown, 10.0f);
             }
         }
 
@@ -286,10 +286,10 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPlaceWard()
         {
-            if (!this.HasEffect(EffectEnum.WardCoolDown))
+            if (!this.HasEffect(EffectEnum.WardCooldown))
             {
                 this.PlaceWard(this._isFacingRight);
-                this.ApplyEffect(EffectEnum.WardCoolDown, Config.WardCooldown);
+                this.ApplyEffect(EffectEnum.WardCooldown, Config.WardCooldown);
             }
         }
 
@@ -346,7 +346,7 @@ namespace Assets.LeagueOfLegends
                     this._Qtarget = null;
                     this._isResonating = false;
                     this._animator.SetBool("Resonating", false);
-                    this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+                    this.ApplyEffect(EffectEnum.QCooldown, 3.0f);
                 }
                 else
                 {
@@ -374,7 +374,7 @@ namespace Assets.LeagueOfLegends
                     this._isDashing = false;
                     this._animator.SetBool("Dashing", false);
                     this.ApplyEffect(EffectEnum.LeeShield, 3.0f);
-                    this.ApplyEffect(EffectEnum.WCoolDown, 3.0f);
+                    this.ApplyEffect(EffectEnum.WCooldown, 3.0f);
                 }
                 else
                 {

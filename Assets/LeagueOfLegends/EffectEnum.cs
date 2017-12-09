@@ -21,14 +21,15 @@ namespace Assets.LeagueOfLegends
         Knockback,
         Knockforward,
         Knockup,
-        QCoolDown,
-        WCoolDown,
+        QCooldown,
+        WCooldown,
         WSecondaryCooldown,
-        ECoolDown,
+        ECooldown,
         ESecondaryCooldown,
-        RCoolDown,
-        WardCoolDown,
+        RCooldown,
+        WardCooldown,
         LuxMark,
-        LuxDetonate
+        LuxDetonate,
+        AutoAttackCooldown
     }
 }

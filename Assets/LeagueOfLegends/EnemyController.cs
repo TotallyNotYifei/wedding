@@ -44,6 +44,7 @@ namespace Assets.LeagueOfLegends
         protected override void Start()
         {
             Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), this.LeeSin.GetComponent<BoxCollider2D>());
+            Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), this.Lux.GetComponent<BoxCollider2D>());
             EnemyController.Enemies.Add(this);
 
             base.Start();
@@ -61,6 +62,15 @@ namespace Assets.LeagueOfLegends
                 if (proj.CarriedEffects.Contains(EffectEnum.LeeQLanded))
                 {
                     LeeSin.OnQLanded(this);
+                }
+
+                if (proj.CarriedEffects.Contains(EffectEnum.LuxDetonate))
+                {
+                    if (this.HasEffect(EffectEnum.LuxMark))
+                    {
+                        this.RemoveEffect(EffectEnum.LuxMark);
+                        this.TakeDamage(Config.Lux.DetonateMarkDamage);
+                    }
                 }
 
                 for(int i= 0;i<proj.EffectVisualPrefabs.Count;i++)
@@ -85,7 +95,7 @@ namespace Assets.LeagueOfLegends
         }
 
         /// <summary>
-        /// Called  when the enemy gameobject is destroyed
+        /// Called  when the enemy game object is destroyed
         /// </summary>
         protected void OnDestroy()
         {

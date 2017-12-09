@@ -150,7 +150,7 @@ namespace Assets.LeagueOfLegends
             /// <summary>
             /// How long the marks last for
             /// </summary>
-            public const float MarkDuration = 4.0f;
+            public const float MarkDuration = 5.0f;
 
             /// <summary>
             /// How much damage it'll do to detonate Lux's mark

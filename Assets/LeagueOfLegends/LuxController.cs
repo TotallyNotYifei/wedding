@@ -25,6 +25,7 @@ namespace Assets.LeagueOfLegends
         public LuxWProjectile WProjectile;
         public LuxEProjectile EProjectile;
         public LuxLaser Laser;
+        public Projectile LuxAutoProjectile;
 
         /// <summary>
         /// LeeSin
@@ -48,6 +49,13 @@ namespace Assets.LeagueOfLegends
             foreach (var enemy in enemiesInRange)
             {
                 enemy.TakeDamage(Config.Lux.RDamage);
+
+                // Detonates the mark and applies a new one
+                if (enemy.HasEffect(EffectEnum.LuxMark))
+                {
+                    enemy.ApplyEffect(EffectEnum.LuxMark, Config.Lux.MarkDuration);
+                    enemy.TakeDamage(Config.Lux.DetonateMarkDamage);
+                }
             }
         }
 
@@ -56,7 +64,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressQ()
         {
-            if (this.HasEffect(EffectEnum.QCoolDown))
+            if (this.HasEffect(EffectEnum.QCooldown))
             {
                 return;
             }
@@ -64,7 +72,7 @@ namespace Assets.LeagueOfLegends
             var newQProj = Instantiate(this.QProjectile);
             newQProj.Damage = Config.Lux.QDamage;
             newQProj.transform.position = this.transform.position;
-            this.ApplyEffect(EffectEnum.QCoolDown, 3.0f);
+            this.ApplyEffect(EffectEnum.QCooldown, 3.0f);
             this._animator.SetBool("HitQE", true);
 
             if (!this._isFacingRight)
@@ -78,7 +86,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressW()
         {
-            if (this.HasEffect(EffectEnum.WCoolDown))
+            if (this.HasEffect(EffectEnum.WCooldown))
             {
                 return;
             }
@@ -90,7 +98,7 @@ namespace Assets.LeagueOfLegends
                 newWProj.Velocity *= -1;
             }
             newWProj.transform.position = this.transform.position;
-            this.ApplyEffect(EffectEnum.WCoolDown, Config.Lux.WCoolDown);
+            this.ApplyEffect(EffectEnum.WCooldown, Config.Lux.WCoolDown);
             this._animator.SetBool("HitW", true);
 
             this.ApplyEffect(EffectEnum.Snare, 0.4f);
@@ -107,7 +115,7 @@ namespace Assets.LeagueOfLegends
                 this._firedEProjectile = null;
             }
 
-            else if (!this.HasEffect(EffectEnum.ECoolDown))
+            else if (!this.HasEffect(EffectEnum.ECooldown))
             {
                 var newEProj = Instantiate(this.EProjectile).GetComponent<LuxEProjectile>(); ;
                 newEProj.transform.position = this.transform.position;
@@ -115,7 +123,7 @@ namespace Assets.LeagueOfLegends
                 {
                     newEProj.Velocity *= -1;
                 }
-                this.ApplyEffect(EffectEnum.ECoolDown, Config.Lux.ECoolDown);
+                this.ApplyEffect(EffectEnum.ECooldown, Config.Lux.ECoolDown);
                 this.ApplyEffect(EffectEnum.Snare, 0.4f);
                 this._animator.SetBool("HitQE", true);
 
@@ -128,15 +136,14 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressR()
         {
-            if (this.HasEffect(EffectEnum.RCoolDown))
+            if (this.HasEffect(EffectEnum.RCooldown))
             {
                 return;
             }
 
-
             this._animator.SetBool("HitR", true);
             this.ApplyEffect(EffectEnum.Snare, 1.2f);
-            this.ApplyEffect(EffectEnum.RCoolDown, Config.Lux.RCoolDown);
+            this.ApplyEffect(EffectEnum.RCooldown, Config.Lux.RCoolDown);
             var newLaser = Instantiate(this.Laser).GetComponent<LuxLaser>();
             newLaser.Lux = this;
             var diffX = Config.Lux.RPlacementRage;
@@ -146,6 +153,14 @@ namespace Assets.LeagueOfLegends
             }
 
             newLaser.transform.position = new Vector3(diffX + this.transform.position.x, 0, 0);
+        }
+
+        /// <summary>
+        /// Called when Lux auto attacks
+        /// </summary>
+        private void OnAutoAttack()
+        {
+            this.FireNormalProjectile(this.LuxAutoProjectile, this._isFacingRight, EffectEnum.AutoAttackCooldown, 0.6f, "HitAuto");
         }
 
         /// <summary>
@@ -165,6 +180,7 @@ namespace Assets.LeagueOfLegends
             this._animator.SetBool("HitQE", false);
             this._animator.SetBool("HitW", false);
             this._animator.SetBool("HitR", false);
+            this._animator.SetBool("HitAuto", false);
 
             var stickX = 0;
             if (Input.GetKey(KeyCode.J))
@@ -195,6 +211,10 @@ namespace Assets.LeagueOfLegends
             if (Input.GetKeyDown(KeyCode.P))
             {
                 this.OnPressR();
+            }
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                this.OnAutoAttack();
             }
 
             this._animator.SetBool("IsMoving", stickX != 0);
