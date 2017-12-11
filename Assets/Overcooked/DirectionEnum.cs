@@ -16,9 +16,9 @@ namespace Assets.Overcooked
     /// </summary>
     public enum DirectionEnum
     {
-        Right,
-        Up,
+        Down,
         Left,
-        Down
+        Up,
+        Right
     }
 }

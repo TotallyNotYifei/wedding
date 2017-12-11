@@ -17,5 +17,17 @@ namespace Assets.Overcooked
     /// </summary>
     public abstract class Holdable : MonoBehaviour
     {
+        /// <summary>
+        /// Gets the sprite renderer component
+        /// </summary>
+        public SpriteRenderer Sprite { get; private set; }
+
+        /// <summary>
+        /// Used for initialization
+        /// </summary>
+        protected void Start()
+        {
+            this.Sprite = this.GetComponent<SpriteRenderer>();
+        }
     }
 }

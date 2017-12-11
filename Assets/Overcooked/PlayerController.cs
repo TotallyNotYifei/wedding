@@ -23,6 +23,11 @@ namespace Assets.Overcooked
         public DirectionEnum CurrentlyFacing { get; private set; }
 
         /// <summary>
+        /// Game object for the arms
+        /// </summary>
+        public GameObject Arms;
+
+        /// <summary>
         /// THe object that the player is currently holding
         /// </summary>
         public Holdable CurrentlyHolding;
@@ -69,6 +74,12 @@ namespace Assets.Overcooked
             {
                 stickY = -1;
                 this.CurrentlyFacing = DirectionEnum.Down;
+            }
+
+            for(int i =0;i<4;i++)
+            {
+                var direction = (DirectionEnum)i;
+                this._animator.SetBool(Config.DirectionToAnimatorParam[direction], direction == this.CurrentlyFacing);
             }
 
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
