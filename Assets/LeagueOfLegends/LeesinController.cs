@@ -156,7 +156,7 @@ namespace Assets.LeagueOfLegends
         private void OnPressQ()
         {
             //  If leesin is in the middle of resonating strike do nothing
-            if (this._isResonating)
+            if (this.HasEffect(EffectEnum.QSecondaryCooldown))
             {
                 return;
             }
@@ -172,6 +172,7 @@ namespace Assets.LeagueOfLegends
                     newQGround.transform.position = this.transform.position;
                     this._animator.SetBool("Resonating", true);
                     this._isResonating = true;
+                    this.ApplyEffect(EffectEnum.QSecondaryCooldown, this.GetEffectDuration(EffectEnum.QCooldown));
                 }
                 else
                 {
@@ -229,6 +230,7 @@ namespace Assets.LeagueOfLegends
         /// </summary>
         private void OnPressE()
         {
+            Debug.Log("Hit E");
             float eCooldown;
             if (!this.Effects.TryGetValue(EffectEnum.ECooldown, out eCooldown))
             {

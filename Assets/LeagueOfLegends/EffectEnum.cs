@@ -22,6 +22,7 @@ namespace Assets.LeagueOfLegends
         Knockforward,
         Knockup,
         QCooldown,
+        QSecondaryCooldown,
         WCooldown,
         WSecondaryCooldown,
         ECooldown,

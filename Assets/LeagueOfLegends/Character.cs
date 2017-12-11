@@ -142,6 +142,22 @@ namespace Assets.LeagueOfLegends
         }
 
         /// <summary>
+        /// Gets the remaining duration of the effect, 0 if none
+        /// </summary>
+        /// <param name="e">Target effect</param>
+        /// <returns>Remaining duration, 0 if unaffected</returns>
+        public float GetEffectDuration(EffectEnum e)
+        {
+            float result;
+            if (this.Effects.TryGetValue(e, out result))
+            {
+                return result;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
         /// Takes damage
         /// </summary>
         /// <param name="damage">Damage taken</param>
