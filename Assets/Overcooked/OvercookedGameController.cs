@@ -41,13 +41,13 @@ namespace Assets.Overcooked
         /// <summary>
         /// All map objects
         /// </summary>
-        private IList<MapObject> _mapObjects = new List<MapObject>();
+        private IList<OvercookedMapObject> _mapObjects = new List<OvercookedMapObject>();
 
         /// <summary>
         /// Adds a new map object
         /// </summary>
         /// <param name="newObject">New object to be added</param>
-        public void AddMapObject(MapObject newObject)
+        public void AddMapObject(OvercookedMapObject newObject)
         {
             this._mapObjects.Add(newObject);
         }

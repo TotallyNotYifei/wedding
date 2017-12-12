@@ -1,5 +1,5 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="MapObject.cs">
+//  <copyright file="OvercookedMapObject.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
@@ -15,8 +15,13 @@ namespace Assets.Overcooked
     /// <summary>
     /// Defines an object on the map
     /// </summary>
-    public class MapObject : MonoBehaviour
+    public class OvercookedMapObject : MonoBehaviour
     {
+        /// <summary>
+        /// The type of object that this is
+        /// </summary>
+        public OvercookedMapObjectTypes ObjectType;
+
         /// <summary>
         /// Used for initialization
         /// </summary>
