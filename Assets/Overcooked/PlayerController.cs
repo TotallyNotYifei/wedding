@@ -51,20 +51,10 @@ namespace Assets.Overcooked
         /// </summary>
         protected void Update()
         {
+            #region Handles Movement
             var stickX = 0;
             var stickY = 0;
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                stickX = 1;
-                this.CurrentlyFacing = DirectionEnum.Right;
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                stickX = -11;
-                this.CurrentlyFacing = DirectionEnum.Left;
-            }
-
+            
             if (Input.GetKey(KeyCode.W))
             {
                 stickY = 1;
@@ -76,14 +66,38 @@ namespace Assets.Overcooked
                 this.CurrentlyFacing = DirectionEnum.Down;
             }
 
-            for(int i =0;i<4;i++)
+            if (Input.GetKey(KeyCode.D))
             {
-                var direction = (DirectionEnum)i;
-                this._animator.SetBool(Config.DirectionToAnimatorParam[direction], direction == this.CurrentlyFacing);
+                stickX = 1;
+                this.CurrentlyFacing = DirectionEnum.Right;
             }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                stickX = -1;
+                this.CurrentlyFacing = DirectionEnum.Left;
+            }
+
+            if (stickX != 0 || stickY != 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    var direction = (DirectionEnum)i;
+                    this._animator.SetBool(Config.DirectionToAnimatorParam[direction], direction == this.CurrentlyFacing);
+                }
+            }
+
 
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
             this.transform.position += movementThisFrame;
+            #endregion
+
+            #region Handles Chopping
+            // Can't chop while holding something
+            if (this.CurrentlyHolding)
+            {
+
+            }
+            #endregion
         }
     }
 }

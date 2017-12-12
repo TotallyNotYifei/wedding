@@ -38,7 +38,14 @@ namespace Assets.Overcooked
         /// </summary>
         public const float GridSize = 0.64f;
 
+        /// <summary>
+        /// A dictionary of directionEnum => Animator parameter name
+        /// </summary>
         public static Dictionary<DirectionEnum, string> DirectionToAnimatorParam;
 
+        /// <summary>
+        /// How far away can the player pick up/chop/etc
+        /// </summary>
+        public const float TargetRange = 0.60f;
     }
 }
