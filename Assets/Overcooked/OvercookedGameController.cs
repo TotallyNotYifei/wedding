@@ -18,6 +18,13 @@ namespace Assets.Overcooked
     public class OvercookedGameController : MonoBehaviour
     {
         /// <summary>
+        /// How many of each item must be delivered before the game is over
+        /// </summary>
+        public int RequiredBurgerCount;
+        public int RequiredSoupCount;
+        public int RequiredSaladCount;
+
+        /// <summary>
         /// Gets the current instance of the <see cref="OvercookedGameController"/> class
         /// </summary>
         public static OvercookedGameController CurrentInstance
@@ -58,6 +65,25 @@ namespace Assets.Overcooked
         protected void Start()
         {
 
+        }
+
+        /// <summary>
+        /// Check if a plate is finished according to a recipe
+        /// </summary>
+        /// <param name="plate">Target plate</param>
+        /// <param name="receipe">Target recipe</param>
+        /// <returns></returns>
+        private bool IsPlateComplete(Plate plate, List<Ingredient> recipe)
+        {
+            foreach (var item in recipe)
+            {
+                if (!plate.Ingredeints.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
