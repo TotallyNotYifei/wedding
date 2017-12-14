@@ -47,6 +47,7 @@ namespace Assets.Overcooked
             FinishedSoup = new List<IngredientEnum>();
             FinishedSoup.Add(IngredientEnum.OnionSoup);
 
+            Recipes = new List<List<IngredientEnum>>();
             Recipes.Add(FinishedBurger);
             Recipes.Add(FinishedSalad);
             Recipes.Add(FinishedSoup);
@@ -55,12 +56,13 @@ namespace Assets.Overcooked
         /// <summary>
         /// How fast the characters can move
         /// </summary>
-        public const float MovementSpeed = 3.0f;
+        public const float MovementSpeed = 2.3f;
 
         /// <summary>
         /// Size of the grid
         /// </summary>
-        public const float GridSize = 0.72f;
+        public const float GridSizeX = 0.36f;
+        public const float GridSizeY = 0.23f;
 
         /// <summary>
         /// A dictionary of directionEnum => Animator parameter name

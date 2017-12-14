@@ -102,7 +102,7 @@ namespace Assets.Overcooked
             this._rgbd.MovePosition(this.transform.position + movementThisFrame);
 
             // Update order in layer 
-            this._renderer.sortingOrder = -(int)(Mathf.Ceil(this.transform.position.y / Config.GridSize));
+            this._renderer.sortingOrder = -(int)(Mathf.Ceil(this.transform.position.y / Config.GridSizeY))+ 1;
             #endregion
 
             #region Handles Chopping
