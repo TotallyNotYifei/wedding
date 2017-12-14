@@ -38,7 +38,7 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
-        /// If the ingrient is chopped
+        /// If the ingredient is chopped
         /// </summary>
         private bool _isChopped;
     }

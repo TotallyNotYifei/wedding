@@ -1,5 +1,5 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="IngredientEnum.cs">
+//  <copyright file="Plate.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
@@ -12,19 +12,9 @@ namespace Assets.Overcooked
     using System.Text;
 
     /// <summary>
-    /// All types of ingredients used for 3 dishes
-    /// * Onion soup
-    /// * Burger (Bun, meat, lettuce)
-    /// * Salad (Lettuce and tomato)
-    /// * Everything except bun must be chopped before processing
+    /// Describes a plate
     /// </summary>
-    public enum IngredientEnum
+    public class Plate : Container
     {
-        Lettunce,
-        Meat,
-        Tomato,
-        Onion,
-        BurgerBun,
-        OnionSoup
     }
 }

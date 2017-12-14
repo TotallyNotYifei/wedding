@@ -18,6 +18,13 @@ namespace Assets.Overcooked
     public class OvercookedGameController : MonoBehaviour
     {
         /// <summary>
+        /// How many of each item must be delivered before the game is over
+        /// </summary>
+        public int RequiredBurgerCount;
+        public int RequiredSoupCount;
+        public int RequiredSaladCount;
+
+        /// <summary>
         /// Gets the current instance of the <see cref="OvercookedGameController"/> class
         /// </summary>
         public static OvercookedGameController CurrentInstance
@@ -41,15 +48,40 @@ namespace Assets.Overcooked
         /// <summary>
         /// All map objects
         /// </summary>
-        private IList<MapObject> _mapObjects = new List<MapObject>();
+        private IList<OvercookedMapObject> _mapObjects = new List<OvercookedMapObject>();
 
         /// <summary>
         /// Adds a new map object
         /// </summary>
         /// <param name="newObject">New object to be added</param>
-        public void AddMapObject(MapObject newObject)
+        public void AddMapObject(OvercookedMapObject newObject)
         {
             this._mapObjects.Add(newObject);
+        }
+
+        /// <summary>
+        /// Gets the closest map object at the given position
+        /// </summary>
+        /// <param name="position">Target position, origin of the search circle</param>
+        /// <param name="range">Max distance of an item to be considered in range</param>
+        public OvercookedMapObject GetClosestMapObjectAtWorldPosition(Vector3 position, float range)
+        {
+            float? minDistance = null;
+            OvercookedMapObject result = null;
+            foreach(var obj in this._mapObjects)
+            {
+                var distance = (obj.transform.position - position).magnitude;
+                if (distance <= range)
+                {
+                    if (minDistance == null || minDistance > distance)
+                    {
+                        minDistance = distance;
+                        result = obj;
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -58,6 +90,25 @@ namespace Assets.Overcooked
         protected void Start()
         {
 
+        }
+
+        /// <summary>
+        /// Check if a plate is finished according to a recipe
+        /// </summary>
+        /// <param name="plate">Target plate</param>
+        /// <param name="receipe">Target recipe</param>
+        /// <returns></returns>
+        private bool IsPlateComplete(Plate plate, List<Ingredient> recipe)
+        {
+            foreach (var item in recipe)
+            {
+                if (!plate.Ingredeints.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

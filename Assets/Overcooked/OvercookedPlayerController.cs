@@ -1,5 +1,5 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="PlayerController.cs">
+//  <copyright file="OvercookedPlayerController.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes a controller for a player
     /// </summary>
-    public  class PlayerController : MonoBehaviour
+    public  class OvercookedPlayerController : MonoBehaviour
     {
         /// <summary>
         /// The direction that the player is currently facing
@@ -38,18 +38,30 @@ namespace Assets.Overcooked
         private Animator _animator;
 
         /// <summary>
+        /// The rigidbody component
+        /// </summary>
+        private Rigidbody2D _rgbd;
+
+        /// <summary>
+        /// The renderer
+        /// </summary>
+        private SpriteRenderer _renderer;
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected void Start()
         {
             this._animator = this.GetComponent<Animator>();
+            this._renderer = this.GetComponent<SpriteRenderer>();
+            this._rgbd = this.GetComponent<Rigidbody2D>();
             this.CurrentlyHolding = null;
         }
 
         /// <summary>
         /// Called once per frame
         /// </summary>
-        protected void Update()
+        protected void FixedUpdate()
         {
             #region Handles Movement
             var stickX = 0;
@@ -86,18 +98,70 @@ namespace Assets.Overcooked
                 }
             }
 
-
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
-            this.transform.position += movementThisFrame;
+            this._rgbd.MovePosition(this.transform.position + movementThisFrame);
+
+            // Update order in layer 
+            this._renderer.sortingOrder = -(int)(Mathf.Ceil(this.transform.position.y / Config.GridSize));
             #endregion
 
             #region Handles Chopping
             // Can't chop while holding something
-            if (this.CurrentlyHolding)
-            {
+            this._animator.SetBool("IsChopping", Input.GetKey(KeyCode.Q));
+            #endregion
 
+            #region Handles grabbing/dropping item
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
+                    this.transform.position + Config.DirectionToVector[this.CurrentlyFacing] * Config.TargetRange,
+                    Config.TargetRange
+                );
+                if (this.CurrentlyHolding != null)
+                {
+                    this.TryGrabItem(closestMapObject);
+                }
+                else
+                {
+                    this.TryPlaceItem(closestMapObject);
+                }
             }
             #endregion
+        }
+
+        /// <summary>
+        /// Called when the player tries to grab an item
+        /// </summary>
+        /// <param name="closestObject">The closet map object</param>
+        private void TryGrabItem(OvercookedMapObject closestObject)
+        {
+            if (closestObject == null)
+            {
+                return;
+            }
+
+            Holdable newObject = null;
+            if (closestObject.TryTakeItem(out newObject))
+            {
+                this.CurrentlyHolding = newObject;
+            }
+        }
+
+        /// <summary>
+        /// Called when the player tries to place an item
+        /// </summary>
+        /// <param name="closestObject">The closest map object</param>
+        private void TryPlaceItem(OvercookedMapObject closestObject)
+        {
+            if (closestObject == null)
+            {
+                return;
+            }
+
+            if (closestObject.TryPlaceItem(this.CurrentlyHolding))
+            {
+                this.CurrentlyHolding = null;
+            }
         }
     }
 }
