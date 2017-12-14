@@ -75,7 +75,7 @@ namespace Assets.Overcooked
         /// <summary>
         /// How far away can the player pick up/chop/etc
         /// </summary>
-        public const float TargetRange = 0.60f;
+        public const float TargetRange = 0.16f;
 
         /// <summary>
         /// What's considered a finished burger
@@ -88,7 +88,7 @@ namespace Assets.Overcooked
         public static List<IngredientEnum> FinishedSoup;
 
         /// <summary>
-        /// What's considered a finished salsad
+        /// What's considered a finished salad
         /// </summary>
         public static List<IngredientEnum> FinishedSalad;
 

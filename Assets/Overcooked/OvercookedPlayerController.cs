@@ -109,6 +109,59 @@ namespace Assets.Overcooked
             // Can't chop while holding something
             this._animator.SetBool("IsChopping", Input.GetKey(KeyCode.Q));
             #endregion
+
+            #region Handles grabbing/dropping item
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
+                    this.transform.position + Config.DirectionToVector[this.CurrentlyFacing] * Config.TargetRange,
+                    Config.TargetRange
+                );
+                if (this.CurrentlyHolding != null)
+                {
+                    this.TryGrabItem(closestMapObject);
+                }
+                else
+                {
+                    this.TryPlaceItem(closestMapObject);
+                }
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// Called when the player tries to grab an item
+        /// </summary>
+        /// <param name="closestObject">The closet map object</param>
+        private void TryGrabItem(OvercookedMapObject closestObject)
+        {
+            if (closestObject == null)
+            {
+                return;
+            }
+
+            Holdable newObject = null;
+            if (closestObject.TryTakeItem(out newObject))
+            {
+                this.CurrentlyHolding = newObject;
+            }
+        }
+
+        /// <summary>
+        /// Called when the player tries to place an item
+        /// </summary>
+        /// <param name="closestObject">The closest map object</param>
+        private void TryPlaceItem(OvercookedMapObject closestObject)
+        {
+            if (closestObject == null)
+            {
+                return;
+            }
+
+            if (closestObject.TryPlaceItem(this.CurrentlyHolding))
+            {
+                this.CurrentlyHolding = null;
+            }
         }
     }
 }

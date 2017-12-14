@@ -21,5 +21,13 @@ namespace Assets.Overcooked
         /// A list of ingredients in this container
         /// </summary>
         public HashSet<Ingredient> Ingredeints = new HashSet<Ingredient>();
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return this.Ingredeints.Count == 0;
+            }
+        }
     }
 }

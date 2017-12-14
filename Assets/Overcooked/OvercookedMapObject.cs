@@ -15,12 +15,12 @@ namespace Assets.Overcooked
     /// <summary>
     /// Defines an object on the map
     /// </summary>
-    public class OvercookedMapObject : MonoBehaviour
+    public abstract class OvercookedMapObject : MonoBehaviour
     {
         /// <summary>
         /// The type of object that this is
         /// </summary>
-        public OvercookedMapObjectTypes ObjectType;
+        public abstract OvercookedMapObjectTypes ObjectType { get; }
 
         /// <summary>
         /// Used for initialization
@@ -35,7 +35,7 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="item">Item to be placed</param>
         /// <returns>True if the operation succed, and the item has been placed</returns>
-        protected virtual bool TryPlaceItem(Holdable item)
+        public virtual bool TryPlaceItem(Holdable item)
         {
             return false;
         }
@@ -45,7 +45,7 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="item">Item reterieve</param>
         /// <returns>True if the operation succed, and the item has been taken off</returns>
-        protected bool TryTakeItem(out Holdable item)
+        public virtual bool TryTakeItem(out Holdable item)
         {
             item = null;
             return false;

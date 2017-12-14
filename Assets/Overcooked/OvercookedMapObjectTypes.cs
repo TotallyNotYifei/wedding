@@ -15,6 +15,7 @@ namespace Assets.Overcooked
         Counter,
         FoodCrate,
         Table,
-        TrashCan
+        TrashCan,
+        ChoppingBoard
     }
 }

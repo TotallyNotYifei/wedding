@@ -60,6 +60,31 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
+        /// Gets the closest map object at the given position
+        /// </summary>
+        /// <param name="position">Target position, origin of the search circle</param>
+        /// <param name="range">Max distance of an item to be considered in range</param>
+        public OvercookedMapObject GetClosestMapObjectAtWorldPosition(Vector3 position, float range)
+        {
+            float? minDistance = null;
+            OvercookedMapObject result = null;
+            foreach(var obj in this._mapObjects)
+            {
+                var distance = (obj.transform.position - position).magnitude;
+                if (distance <= range)
+                {
+                    if (minDistance == null || minDistance > distance)
+                    {
+                        minDistance = distance;
+                        result = obj;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// used for initialization
         /// </summary>
         protected void Start()
