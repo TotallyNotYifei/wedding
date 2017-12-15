@@ -25,7 +25,7 @@ namespace Assets.Overcooked
         /// <summary>
         /// Used for initialization
         /// </summary>
-        protected void Start()
+        protected virtual void Start()
         {
             OvercookedGameController.CurrentInstance.AddMapObject(this);
         }

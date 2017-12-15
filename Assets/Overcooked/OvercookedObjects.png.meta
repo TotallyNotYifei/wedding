@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5b4bd9e630247824ead456572b4c01ce
-timeCreated: 1513097963
+timeCreated: 1513269785
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,10 @@ TextureImporter:
     21300010: OvercookedObjects_5
     21300012: OvercookedObjects_6
     21300014: OvercookedObjects_7
+    21300016: OvercookedObjects_8
+    21300018: OvercookedObjects_9
+    21300020: OvercookedObjects_10
+    21300022: OvercookedObjects_11
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -106,9 +110,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 300
-        width: 72
-        height: 100
+        y: 150
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,10 +122,10 @@ TextureImporter:
       name: OvercookedObjects_1
       rect:
         serializedVersion: 2
-        x: 72
-        y: 300
-        width: 72
-        height: 100
+        x: 36
+        y: 150
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,10 +135,10 @@ TextureImporter:
       name: OvercookedObjects_2
       rect:
         serializedVersion: 2
-        x: 144
-        y: 300
-        width: 72
-        height: 100
+        x: 72
+        y: 150
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,10 +148,10 @@ TextureImporter:
       name: OvercookedObjects_3
       rect:
         serializedVersion: 2
-        x: 216
-        y: 300
-        width: 72
-        height: 100
+        x: 108
+        y: 150
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,9 +162,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 200
-        width: 72
-        height: 100
+        y: 100
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +174,10 @@ TextureImporter:
       name: OvercookedObjects_5
       rect:
         serializedVersion: 2
-        x: 72
-        y: 200
-        width: 72
-        height: 100
+        x: 36
+        y: 100
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +187,10 @@ TextureImporter:
       name: OvercookedObjects_6
       rect:
         serializedVersion: 2
-        x: 144
-        y: 200
-        width: 72
-        height: 100
+        x: 72
+        y: 100
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,10 +200,62 @@ TextureImporter:
       name: OvercookedObjects_7
       rect:
         serializedVersion: 2
-        x: 216
-        y: 200
-        width: 72
-        height: 100
+        x: 108
+        y: 100
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OvercookedObjects_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 50
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OvercookedObjects_9
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 50
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OvercookedObjects_10
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 50
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OvercookedObjects_11
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 50
+        width: 36
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

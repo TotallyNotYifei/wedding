@@ -46,6 +46,8 @@ namespace Assets.Overcooked
             }
 
             this._currentlyPlaced = item;
+            item.transform.position = this.transform.position + new Vector3(0, Config.ItemPlacementHeight);
+            item.GetComponent<SpriteRenderer>().sortingOrder = -1;
             return true;
         }
 

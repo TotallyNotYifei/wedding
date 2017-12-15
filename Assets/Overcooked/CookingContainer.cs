@@ -1,22 +1,20 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="OvercookedMapObjectTypes.cs">
+//  <copyright file="CookingContainer.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
 namespace Assets.Overcooked
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
-    /// A list of possible map objects
+    /// Defines a container action
     /// </summary>
-    public enum OvercookedMapObjectTypes
+    public class CookingContainer : Container
     {
-        Burner,
-        Counter,
-        FoodCrate,
-        Table,
-        TrashCan,
-        ChoppingBoard,
-        Sink
     }
 }
