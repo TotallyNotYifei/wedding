@@ -48,6 +48,11 @@ namespace Assets.Overcooked
         private SpriteRenderer _renderer;
 
         /// <summary>
+        /// Renderer of the item currently being held
+        /// </summary>
+        private SpriteRenderer _holdingRenderer;
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected void Start()
@@ -101,8 +106,11 @@ namespace Assets.Overcooked
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
             this._rgbd.MovePosition(this.transform.position + movementThisFrame);
 
-            // Update order in layer 
-            this._renderer.sortingOrder = -(int)(Mathf.Ceil(this.transform.position.y / Config.GridSizeY))+ 1;
+            if(this.CurrentlyHolding != null)
+            {
+                this.CurrentlyHolding.transform.position = this.transform.position + Config.HoldItemOffset[this.CurrentlyFacing];
+                this._holdingRenderer.sortingOrder = Config.HoldItemLayer[this.CurrentlyFacing];
+            }
             #endregion
 
             #region Handles Chopping
@@ -113,17 +121,18 @@ namespace Assets.Overcooked
             #region Handles grabbing/dropping item
             if (Input.GetKeyDown(KeyCode.E))
             {
+                var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
                 var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
-                    this.transform.position + Config.DirectionToVector[this.CurrentlyFacing] * Config.TargetRange,
+                    checkPos,
                     Config.TargetRange
                 );
                 if (this.CurrentlyHolding != null)
                 {
-                    this.TryGrabItem(closestMapObject);
+                    this.TryPlaceItem(closestMapObject);
                 }
                 else
                 {
-                    this.TryPlaceItem(closestMapObject);
+                    this.TryGrabItem(closestMapObject);
                 }
             }
             #endregion
@@ -144,6 +153,7 @@ namespace Assets.Overcooked
             if (closestObject.TryTakeItem(out newObject))
             {
                 this.CurrentlyHolding = newObject;
+                this._holdingRenderer = newObject.GetComponent<SpriteRenderer>();
             }
         }
 

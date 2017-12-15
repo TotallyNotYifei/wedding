@@ -28,11 +28,11 @@ namespace Assets.Overcooked
             DirectionToAnimatorParam[DirectionEnum.Down] = "IsDown";
             DirectionToAnimatorParam[DirectionEnum.Right] = "IsRight";
 
-            DirectionToVector = new Dictionary<DirectionEnum, Vector3>();
-            DirectionToVector[DirectionEnum.Up] = Vector3.up;
-            DirectionToVector[DirectionEnum.Left] = Vector3.left;
-            DirectionToVector[DirectionEnum.Down] = Vector3.down;
-            DirectionToVector[DirectionEnum.Right] = Vector3.right;
+            FaceDirectionOffset = new Dictionary<DirectionEnum, Vector3>();
+            FaceDirectionOffset[DirectionEnum.Up] = new Vector3(0, 0.17f);
+            FaceDirectionOffset[DirectionEnum.Left] = new Vector3(-0.32f, -0.08f);
+            FaceDirectionOffset[DirectionEnum.Down] = new Vector3(0, -0.31f);
+            FaceDirectionOffset[DirectionEnum.Right] = new Vector3(0.32f, -0.08f);
 
             FinishedBurger = new List<IngredientEnum>();
             FinishedBurger.Add(IngredientEnum.BurgerBun);
@@ -51,18 +51,35 @@ namespace Assets.Overcooked
             Recipes.Add(FinishedBurger);
             Recipes.Add(FinishedSalad);
             Recipes.Add(FinishedSoup);
+
+            HoldItemOffset = new Dictionary<DirectionEnum, Vector3>();
+            HoldItemOffset[DirectionEnum.Down] = new Vector3(0, -0.06f);
+            HoldItemOffset[DirectionEnum.Left] = new Vector3(-0.25f, 0f);
+            HoldItemOffset[DirectionEnum.Up] = new Vector3(0, 0.14f);
+            HoldItemOffset[DirectionEnum.Right] = new Vector3(0.25f, 0f);
+
+            HoldItemLayer = new Dictionary<DirectionEnum, int>();
+            HoldItemLayer[DirectionEnum.Down] = 2;
+            HoldItemLayer[DirectionEnum.Left] = 2;
+            HoldItemLayer[DirectionEnum.Up] = -1;
+            HoldItemLayer[DirectionEnum.Right] = 2;
         }
 
         /// <summary>
         /// How fast the characters can move
         /// </summary>
-        public const float MovementSpeed = 2.3f;
+        public const float MovementSpeed = 2.0f;
 
         /// <summary>
         /// Size of the grid
         /// </summary>
         public const float GridSizeX = 0.36f;
         public const float GridSizeY = 0.23f;
+
+        /// <summary>
+        /// How tall to place the item when item is on a counter
+        /// </summary>
+        public const float ItemPlacementHeight = 0.125f;
 
         /// <summary>
         /// A dictionary of directionEnum => Animator parameter name
@@ -72,12 +89,22 @@ namespace Assets.Overcooked
         /// <summary>
         /// A dictionary of directionEnum => Vector3 as direction
         /// </summary>
-        public static Dictionary<DirectionEnum, Vector3> DirectionToVector;
+        public static Dictionary<DirectionEnum, Vector3> FaceDirectionOffset;
+
+        /// <summary>
+        /// A dictionary of holding item => item offset
+        /// </summary>
+        public static Dictionary<DirectionEnum, Vector3> HoldItemOffset;
+
+        /// <summary>
+        /// A dictionary of hel item => their sorting layer
+        /// </summary>
+        public static Dictionary<DirectionEnum, int> HoldItemLayer;
 
         /// <summary>
         /// How far away can the player pick up/chop/etc
         /// </summary>
-        public const float TargetRange = 0.16f;
+        public const float TargetRange = 0.30f;
 
         /// <summary>
         /// What's considered a finished burger

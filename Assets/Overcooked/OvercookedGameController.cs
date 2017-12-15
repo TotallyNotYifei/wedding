@@ -17,6 +17,8 @@ namespace Assets.Overcooked
     /// </summary>
     public class OvercookedGameController : MonoBehaviour
     {
+        public List<Plate> plates;
+
         /// <summary>
         /// How many of each item must be delivered before the game is over
         /// </summary>
@@ -57,9 +59,14 @@ namespace Assets.Overcooked
         public void AddMapObject(OvercookedMapObject newObject)
         {
             this._mapObjects.Add(newObject);
+            if (this.plates.Count > 0)
+            {
+                newObject.TryPlaceItem(this.plates[0]);
+                this.plates.RemoveAt(0);
+            }
         }
 
-        /// <summary>
+
         /// Gets the closest map object at the given position
         /// </summary>
         /// <param name="position">Target position, origin of the search circle</param>
