@@ -22,6 +22,9 @@ namespace Assets.Overcooked
         /// </summary>
         public HashSet<Ingredient> Ingredeints = new HashSet<Ingredient>();
 
+        /// <summary>
+        /// If the container is empty
+        /// </summary>
         public bool IsEmpty
         {
             get
