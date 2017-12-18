@@ -64,7 +64,7 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
-        /// Called once per frame
+        /// Called once per frame with a set offset
         /// </summary>
         protected void FixedUpdate()
         {
@@ -117,7 +117,13 @@ namespace Assets.Overcooked
             // Can't chop while holding something
             this._animator.SetBool("IsChopping", Input.GetKey(KeyCode.Q));
             #endregion
+        }
 
+        /// <summary>
+        /// Called once per frame
+        /// </summary>
+        protected void Update()
+        {
             #region Handles grabbing/dropping item
             if (Input.GetKeyDown(KeyCode.E))
             {

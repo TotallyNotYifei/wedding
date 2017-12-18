@@ -74,7 +74,7 @@ namespace Assets.Overcooked
         /// Size of the grid
         /// </summary>
         public const float GridSizeX = 0.36f;
-        public const float GridSizeY = 0.23f;
+        public const float GridSizeY = 0.27f;
 
         /// <summary>
         /// How tall to place the item when item is on a counter
