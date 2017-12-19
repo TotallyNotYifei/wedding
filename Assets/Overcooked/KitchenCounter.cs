@@ -44,7 +44,7 @@ namespace Assets.Overcooked
             {
                 if (item is Ingredient)
                 {
-                    return this.CurrentlyPlaced.AddIngredient(item as Ingredient);
+                    return this.CurrentlyPlaced.TryAddIngredient(item as Ingredient);
                 }
                 else
                 {

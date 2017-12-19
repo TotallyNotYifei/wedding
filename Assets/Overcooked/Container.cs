@@ -15,12 +15,12 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes a container such as plate, pot, or pan
     /// </summary>
-    public class Container : Holdable
+    public abstract class Container : Holdable
     {
         /// <summary>
         /// A list of ingredients in this container
         /// </summary>
-        public HashSet<Ingredient> Ingredeints = new HashSet<Ingredient>();
+        public List<Ingredient> Ingredeints = new List<Ingredient>();
 
         /// <summary>
         /// If the container is empty

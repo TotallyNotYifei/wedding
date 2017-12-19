@@ -17,13 +17,23 @@ namespace Assets.Overcooked
     public class Plate : Container
     {
         /// <summary>
+        /// Gets the plate type
+        /// </summary>
+        public override HoldableTypes HoldableType
+        {
+            get
+            {
+                return HoldableTypes.Plate;
+            }
+        }
+
+        /// <summary>
         /// Consumes the given ingredient
         /// </summary>
         /// <param name="ingredeint">Target ingredient</param>
         private void ConsumeIngredient(Ingredient ingredeint)
         {
             this.Ingredeints.Add(ingredeint);
-            Destroy(ingredeint.gameObject);
         }
 
         private static HashSet<IngredientEnum> _singleOnlyItems = new HashSet<IngredientEnum>() {
@@ -36,14 +46,14 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="newIngredient">New ingredient to be added</param>
         /// <returns>True if operation succeed</returns>
-        public override bool AddIngredient(Ingredient newIngredient)
+        public override bool TryAddIngredient(Ingredient newIngredient)
         {
             if (!newIngredient.IsChopped)
             {
                 return false;
             }
 
-            if (this.Ingredeints.Contains(newIngredient))
+            if (this.Ingredeints.Any(existIng => existIng.IngredientType == newIngredient.IngredientType))
             {
                 return false;
             }

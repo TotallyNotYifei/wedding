@@ -18,6 +18,11 @@ namespace Assets.Overcooked
     public abstract class Holdable : MonoBehaviour
     {
         /// <summary>
+        /// Gets the type of holdable this item is
+        /// </summary>
+        public abstract HoldableTypes HoldableType { get; }
+
+        /// <summary>
         /// Gets the sprite renderer component
         /// </summary>
         public SpriteRenderer SpriteComponent { get; private set; }
@@ -35,7 +40,7 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="newIngredient">New ingredient to be added</param>
         /// <returns>True if operation successful</returns>
-        public virtual bool AddIngredient(Ingredient newIngredient)
+        public virtual bool TryAddIngredient(Ingredient newIngredient)
         {
             return false;
         }
