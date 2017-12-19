@@ -36,7 +36,7 @@ namespace Assets.Overcooked
 
             FinishedBurger = new List<IngredientEnum>();
             FinishedBurger.Add(IngredientEnum.BurgerBun);
-            FinishedBurger.Add(IngredientEnum.Meat);
+            FinishedBurger.Add(IngredientEnum.RawMeat);
             FinishedBurger.Add(IngredientEnum.Lettunce);
             FinishedBurger.Add(IngredientEnum.Tomato);
 
@@ -77,7 +77,7 @@ namespace Assets.Overcooked
         public const float GridSizeY = 0.27f;
 
         /// <summary>
-        /// How tall to place the item when item is on a counter
+        /// How tall to place the item when item is on a container
         /// </summary>
         public const float ItemPlacementHeight = 0.125f;
 

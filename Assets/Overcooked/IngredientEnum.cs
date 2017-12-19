@@ -21,7 +21,8 @@ namespace Assets.Overcooked
     public enum IngredientEnum
     {
         Lettunce,
-        Meat,
+        RawMeat,
+        CookedMeat,
         Tomato,
         Onion,
         BurgerBun,

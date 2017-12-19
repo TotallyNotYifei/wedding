@@ -23,6 +23,11 @@ namespace Assets.Overcooked
         public IngredientEnum IngredientType;
 
         /// <summary>
+        /// Sprite for an ingredient that's been shopped
+        /// </summary>
+        public Sprite ChoppedSprite;
+
+        /// <summary>
         /// If the ingredient has been chopped on a chopping board
         /// </summary>
         public bool IsChopped
@@ -41,5 +46,23 @@ namespace Assets.Overcooked
         /// If the ingredient is chopped
         /// </summary>
         private bool _isChopped;
+
+        /// <summary>
+        /// When the ingredient is chopped
+        /// </summary>
+        public void FinishChopping()
+        {
+            this.SpriteComponent.sprite = this.ChoppedSprite;
+            this._isChopped = true;
+        }
+
+        /// <summary>
+        /// Used for initialization
+        /// </summary>
+        protected override void Start()
+        {
+            this._isChopped = false;
+            base.Start();
+        }
     }
 }

@@ -20,14 +20,24 @@ namespace Assets.Overcooked
         /// <summary>
         /// Gets the sprite renderer component
         /// </summary>
-        public SpriteRenderer Sprite { get; private set; }
+        public SpriteRenderer SpriteComponent { get; private set; }
 
         /// <summary>
         /// Used for initialization
         /// </summary>
-        protected void Start()
+        protected virtual void Start()
         {
-            this.Sprite = this.GetComponent<SpriteRenderer>();
+            this.SpriteComponent = this.GetComponent<SpriteRenderer>();
+        }
+
+        /// <summary>
+        /// Adds an ingredient to this item
+        /// </summary>
+        /// <param name="newIngredient">New ingredient to be added</param>
+        /// <returns>True if operation successful</returns>
+        public virtual bool AddIngredient(Ingredient newIngredient)
+        {
+            return false;
         }
     }
 }

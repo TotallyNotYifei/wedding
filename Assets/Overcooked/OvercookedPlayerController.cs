@@ -53,6 +53,11 @@ namespace Assets.Overcooked
         private SpriteRenderer _holdingRenderer;
 
         /// <summary>
+        /// What's being chopped on right now
+        /// </summary>
+        private ChoppingBoard _currentlyChopping;
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected void Start()
@@ -69,6 +74,11 @@ namespace Assets.Overcooked
         protected void FixedUpdate()
         {
             #region Handles Movement
+            if (this._currentlyChopping != null)
+            {
+                return;
+            }
+
             var stickX = 0;
             var stickY = 0;
             
@@ -112,11 +122,6 @@ namespace Assets.Overcooked
                 this._holdingRenderer.sortingOrder = Config.HoldItemLayer[this.CurrentlyFacing];
             }
             #endregion
-
-            #region Handles Chopping
-            // Can't chop while holding something
-            this._animator.SetBool("IsChopping", Input.GetKey(KeyCode.Q));
-            #endregion
         }
 
         /// <summary>
@@ -139,6 +144,38 @@ namespace Assets.Overcooked
                 else
                 {
                     this.TryGrabItem(closestMapObject);
+                }
+            }
+            #endregion
+
+            #region Handles chopping
+            if (Input.GetKeyUp(KeyCode.Q) || (this._currentlyChopping != null && !this._currentlyChopping.CanChop()))
+            {
+                if (this._currentlyChopping != null)
+                {
+                    this._currentlyChopping.IsChopping = false;
+                }
+                this._currentlyChopping = null;
+                this._animator.SetBool("IsChopping", false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
+                var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
+                    checkPos,
+                    Config.TargetRange
+                );
+                if (closestMapObject.ObjectType == OvercookedMapObjectTypes.ChoppingBoard)
+                {
+                    var choppingBoard = closestMapObject.GetComponent<ChoppingBoard>();
+
+                    if (choppingBoard.CanChop())
+                    {
+                        this._currentlyChopping = choppingBoard;
+                        this._currentlyChopping.IsChopping = true;
+                        this._animator.SetBool("IsChopping", true);
+                    }
                 }
             }
             #endregion

@@ -31,7 +31,7 @@ namespace Assets.Overcooked
         /// <summary>
         /// The item that's current being placed on top
         /// </summary>
-        private Holdable _currentlyPlaced;
+        protected Holdable CurrentlyPlaced;
 
         /// <summary>
         /// Try to place an item
@@ -40,12 +40,19 @@ namespace Assets.Overcooked
         /// <returns>True if the item can be placed on this map object</returns>
         public override bool TryPlaceItem(Holdable item)
         {
-            if (this._currentlyPlaced != null)
+            if (this.CurrentlyPlaced != null)
             {
-                return false;
+                if (item is Ingredient)
+                {
+                    return this.CurrentlyPlaced.AddIngredient(item as Ingredient);
+                }
+                else
+                {
+                    return false;
+                }
             }
 
-            this._currentlyPlaced = item;
+            this.CurrentlyPlaced = item;
             item.transform.position = this.transform.position + new Vector3(0, Config.ItemPlacementHeight);
             item.GetComponent<SpriteRenderer>().sortingOrder = -1;
             return true;
@@ -58,14 +65,14 @@ namespace Assets.Overcooked
         /// <returns>True if operation succeed</returns>
         public override bool TryTakeItem(out Holdable item)
         {
-            if (this._currentlyPlaced == null)
+            if (this.CurrentlyPlaced == null)
             {
                 item = null;
                 return false;
             }
 
-            item = this._currentlyPlaced;
-            this._currentlyPlaced = null;
+            item = this.CurrentlyPlaced;
+            this.CurrentlyPlaced = null;
             return true;
         }
     }
