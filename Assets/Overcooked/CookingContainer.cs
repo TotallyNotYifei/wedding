@@ -54,6 +54,12 @@ namespace Assets.Overcooked
         public bool IsOnBurner;
 
         /// <summary>
+        /// Try to take out the content of the container
+        /// </summary>
+        /// <returns>The ingredient inside</returns>
+        public abstract Ingredient TryTakeoutContent();
+
+        /// <summary>
         /// Used for initialization
         /// </summary>
         protected override void Start()
@@ -76,6 +82,10 @@ namespace Assets.Overcooked
                 else
                 {
                     this.CookProgress += 1.0f / this.TotalTimeToCook * Time.deltaTime;
+                    if (this.CookProgress >= 1)
+                    {
+                        this.OnFinishCookingHook();
+                    }
                 }
             }
 
@@ -95,6 +105,14 @@ namespace Assets.Overcooked
         protected void ResetTimeTillBurn()
         {
             this.TimeTillBurn = BurnTime;
+        }
+
+        /// <summary>
+        /// Called when the cooking is finished
+        /// </summary>
+        protected virtual void OnFinishCookingHook()
+        {
+            // Do nothing by default
         }
     }
 }

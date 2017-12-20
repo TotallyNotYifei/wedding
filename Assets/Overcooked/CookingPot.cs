@@ -17,6 +17,14 @@ namespace Assets.Overcooked
     /// </summary>
     public class CookingPot : CookingContainer
     {
+        /// <summary>
+        /// Prefab for the soup ingredient
+        /// </summary>
+        public Ingredient SoupPrefab;
+
+        /// <summary>
+        /// The type
+        /// </summary>
         public override HoldableTypes HoldableType
         {
             get
@@ -40,6 +48,7 @@ namespace Assets.Overcooked
             if (this.Ingredeints.Count < 3)
             {
                 this.Ingredeints.Add(newIngredient);
+                newIngredient.gameObject.SetActive(false);
                 this.ProgressLimit = 0.334f * this.Ingredeints.Count;
                 this.ResetTimeTillBurn();
                 this.ProgressBar.gameObject.SetActive(true);
@@ -49,6 +58,20 @@ namespace Assets.Overcooked
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Try to take out the content
+        /// </summary>
+        /// <returns>Resulting cooked food, null if not ready yet</returns>
+        public override Ingredient TryTakeoutContent()
+        {
+            if (this.CookProgress < 1)
+            {
+                return null;
+            }
+
+            return Instantiate(this.SoupPrefab).GetComponent<Ingredient>();
         }
     }
 }
