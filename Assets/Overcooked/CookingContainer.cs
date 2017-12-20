@@ -36,12 +36,12 @@ namespace Assets.Overcooked
         /// <summary>
         /// How much cooking can be done
         /// </summary>
-        protected float CookProgress;
+        public float CookProgress;
 
         /// <summary>
         /// How far the cooking can be done based on the ingredients put in
         /// </summary>
-        protected float ProgressLimit;
+        public float ProgressLimit;
 
         /// <summary>
         /// How long this dish has until it burns
@@ -77,6 +77,15 @@ namespace Assets.Overcooked
                 {
                     this.CookProgress += 1.0f / this.TotalTimeToCook * Time.deltaTime;
                 }
+            }
+
+            if (this.CookProgress <= 0 || this.CookProgress >= 1)
+            {
+                this.ProgressBar.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.ProgressBar.setRatio(this.CookProgress);
             }
         }
 

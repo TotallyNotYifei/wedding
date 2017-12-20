@@ -40,8 +40,9 @@ namespace Assets.Overcooked
             if (this.Ingredeints.Count < 3)
             {
                 this.Ingredeints.Add(newIngredient);
-                this.ProgressLimit = 1.0f / this.Ingredeints.Count;
+                this.ProgressLimit = 0.334f * this.Ingredeints.Count;
                 this.ResetTimeTillBurn();
+                this.ProgressBar.gameObject.SetActive(true);
                 return true;
             }
             else
