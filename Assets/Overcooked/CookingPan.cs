@@ -1,4 +1,9 @@
-﻿
+﻿//  --------------------------------------------------------------------------------------------------------------------
+//  <copyright file="CookingPan.cs">
+//    Copyright (c) Yifei Xu .  All rights reserved.
+//  </copyright>
+//  --------------------------------------------------------------------------------------------------------------------
+
 namespace Assets.Overcooked
 {
     using System;
@@ -6,6 +11,10 @@ namespace Assets.Overcooked
     using System.Linq;
     using System.Text;
     using UnityEngine;
+
+    /// <summary>
+    /// Describes a cooking pan
+    /// </summary>
     public class CookingPan : CookingContainer
     {
         /// <summary>

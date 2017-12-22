@@ -54,7 +54,6 @@ namespace Assets.Overcooked
 
             this.CurrentlyPlaced = item;
             item.transform.position = this.transform.position + new Vector3(0, Config.ItemPlacementHeight);
-            item.GetComponent<SpriteRenderer>().sortingOrder = -1;
             return true;
         }
 
@@ -63,7 +62,7 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="item">Resulting item</param>
         /// <returns>True if operation succeed</returns>
-        public override bool TryTakeItem(out Holdable item)
+        public override bool TryTakeItemWithHand(out Holdable item)
         {
             if (this.CurrentlyPlaced == null)
             {
@@ -74,6 +73,57 @@ namespace Assets.Overcooked
             item = this.CurrentlyPlaced;
             this.CurrentlyPlaced = null;
             return true;
+        }
+
+        /// <summary>
+        /// Try to take item with a plate
+        /// </summary>
+        /// <param name="plate">Plate used</param>
+        /// <param name="item">Resulting item</param>
+        /// <returns>True if succeed</returns>
+        public override bool TryTakeItemWithPlate(Plate plate, out Holdable item)
+        {
+            item = null;
+
+            if (plate.Ingredeints.Count != 0)
+            {
+                return false;
+            }
+
+            if (this.CurrentlyPlaced == null)
+            {
+                return false;
+            }
+
+            if (this.CurrentlyPlaced.HoldableType == HoldableTypes.Plate)
+            {
+                return false;
+            }
+
+            if (this.CurrentlyPlaced.HoldableType == HoldableTypes.Pan)
+            {
+                var pan = this.CurrentlyPlaced as CookingPan;
+                item = pan.TryTakeoutContent();
+                return item != null;
+            }
+
+            if (this.CurrentlyPlaced.HoldableType == HoldableTypes.Pot)
+            {
+                var pot = this.CurrentlyPlaced as CookingPot;
+                item = pot.TryTakeoutContent();
+                return item != null;
+            }
+
+            if (this.CurrentlyPlaced.HoldableType == HoldableTypes.Ingredient)
+            {
+                if (plate.TryAddIngredient(this.CurrentlyPlaced as Ingredient))
+                {
+                    this.CurrentlyPlaced = null;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

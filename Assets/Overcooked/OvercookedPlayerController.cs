@@ -193,7 +193,7 @@ namespace Assets.Overcooked
             }
 
             Holdable newObject = null;
-            if (closestObject.TryTakeItem(out newObject))
+            if (closestObject.TryTakeItemWithHand(out newObject))
             {
                 this.CurrentlyHolding = newObject;
                 this._holdingRenderer = newObject.GetComponent<SpriteRenderer>();
@@ -214,6 +214,19 @@ namespace Assets.Overcooked
             if (closestObject.TryPlaceItem(this.CurrentlyHolding))
             {
                 this.CurrentlyHolding = null;
+            }
+            else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Plate)
+            {
+                var holdingPlate = this.CurrentlyHolding as Plate;
+                if (holdingPlate.Ingredeints.Count() != 1)
+                {
+                    return;
+                }
+
+                if (closestObject.TryPlaceItem(holdingPlate.Ingredeints[0]))
+                {
+                    holdingPlate.Ingredeints.RemoveAt(0);
+                }
             }
         }
     }

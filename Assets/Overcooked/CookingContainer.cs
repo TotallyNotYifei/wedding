@@ -36,22 +36,41 @@ namespace Assets.Overcooked
         /// <summary>
         /// How much cooking can be done
         /// </summary>
-        public float CookProgress;
+        protected float CookProgress;
 
         /// <summary>
         /// How far the cooking can be done based on the ingredients put in
         /// </summary>
-        public float ProgressLimit;
+        protected float ProgressLimit;
 
         /// <summary>
         /// How long this dish has until it burns
         /// </summary>
-        private float TimeTillBurn;
+        protected float TimeTillBurn;
 
         /// <summary>
         /// If the cooking container is on a burner
         /// </summary>
-        public bool IsOnBurner;
+        public bool IsOnBurner
+        {
+            get
+            {
+                return this._isOnBurner;
+            }
+            set
+            {
+                this._isOnBurner = value;
+                if (this.Ingredeints.Count > 0)
+                {
+                    this.ProgressBar.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// If the cooking container is on a burner
+        /// </summary>
+        private bool _isOnBurner;
 
         /// <summary>
         /// Try to take out the content of the container
@@ -73,6 +92,11 @@ namespace Assets.Overcooked
         /// </summary>
         protected virtual void Update()
         {
+            foreach (var ingredient in this.Ingredeints)
+            {
+                ingredient.transform.position = this.transform.position;
+            }
+
             if (this.IsOnBurner)
             {
                 if (this.CookProgress >= this.ProgressLimit)

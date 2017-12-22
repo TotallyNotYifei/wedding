@@ -33,6 +33,25 @@ namespace Assets.Overcooked
             }
         }
 
+        /// <summary>
+        /// Try to take an item
+        /// </summary>
+        /// <param name="item">Resulting item</param>
+        /// <returns>True if an item was taken successfully</returns>
+        public override bool TryTakeItemWithHand(out Holdable item)
+        {
+            if (this.CurrentContainer != null)
+            {
+                this.CurrentContainer.IsOnBurner = false;
+                item = this.CurrentContainer;
+                this.CurrentContainer = null;
+                return true;
+            }
+
+            item = null;
+            return false;
+        }
+
         public override bool TryPlaceItem(Holdable item)
         {
             // If there's nothing on top, only pans and pots can be placed

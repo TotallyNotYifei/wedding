@@ -41,11 +41,23 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
-        /// Try to take an item from this map object
+        /// Try to take an item from this map object with bare hands
         /// </summary>
         /// <param name="item">Item reterieve</param>
         /// <returns>True if the operation succed, and the item has been taken off</returns>
-        public virtual bool TryTakeItem(out Holdable item)
+        public virtual bool TryTakeItemWithHand(out Holdable item)
+        {
+            item = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Try to take an item from this map object with an plate
+        /// </summary>
+        /// <param name="plate">the plate being used to retrieve items</param>
+        /// <param name="item">Resulting item</param>
+        /// <returns>True if operation succeed</returns>
+        public virtual bool TryTakeItemWithPlate(Plate plate, out Holdable item)
         {
             item = null;
             return false;

@@ -64,7 +64,7 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="item">Item to be taken out</param>
         /// <returns>True if successful</returns>
-        public override bool TryTakeItem(out Holdable item)
+        public override bool TryTakeItemWithHand(out Holdable item)
         {
             // if there's nothing to take
             if (this._currentlyPlaced == null)

@@ -37,12 +37,12 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="item">Result item</param>
         /// <returns>True if operation successful</returns>
-        public override bool TryTakeItem(out Holdable item)
+        public override bool TryTakeItemWithHand(out Holdable item)
         {
             // If there's something on top, treat it as a counter
             if (this.CurrentlyPlaced != null)
             {
-                return base.TryTakeItem(out item);
+                return base.TryTakeItemWithHand(out item);
             }
 
             var newIngredient = Instantiate(this.IngredientPrefab);
