@@ -125,29 +125,54 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
+        /// handles item transfer between the play and map objects
+        /// </summary>
+        private void HandleItemTransfer()
+        {
+            var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
+            var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
+                checkPos,
+                Config.TargetRange
+            );
+
+            if (closestMapObject == null)
+            {
+                return;
+            }
+
+            // If nothing is held, grab directly off of the map object
+            if (this.CurrentlyHolding == null)
+            {
+                Holdable newObject = null;
+                if (closestMapObject.TryTakeItemWithHand(out newObject))
+                {
+                    this.CurrentlyHolding = newObject;
+                    this._holdingRenderer = newObject.GetComponent<SpriteRenderer>();
+                }
+            }
+            // Plate interactions
+            else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Plate)
+            {
+                var holdingPlate = this.CurrentlyHolding as Plate;
+
+                // Can only retrieve if plate is empty
+                if (holdingPlate.IsEmpty)
+                {
+
+                }
+                // Plate is not empty, deposit
+                else
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
         /// Called once per frame
         /// </summary>
         protected void Update()
         {
-            #region Handles grabbing/dropping item
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
-                var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
-                    checkPos,
-                    Config.TargetRange
-                );
-                if (this.CurrentlyHolding != null)
-                {
-                    this.TryPlaceItem(closestMapObject);
-                }
-                else
-                {
-                    this.TryGrabItem(closestMapObject);
-                }
-            }
-            #endregion
-
             #region Handles chopping
             if (Input.GetKeyUp(KeyCode.Q) || (this._currentlyChopping != null && !this._currentlyChopping.CanChop()))
             {
@@ -177,6 +202,13 @@ namespace Assets.Overcooked
                         this._animator.SetBool("IsChopping", true);
                     }
                 }
+            }
+            #endregion
+
+            #region Handles grabbing/dropping item
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                
             }
             #endregion
         }
