@@ -150,24 +150,52 @@ namespace Assets.Overcooked
                     this._holdingRenderer = newObject.GetComponent<SpriteRenderer>();
                 }
             }
-            // Plate interactions
-            else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Plate)
+            // If the player is holding ingredient, deposit
+            else if (this.CurrentlyHolding is Ingredient)
             {
-                var holdingPlate = this.CurrentlyHolding as Plate;
-
-                // Can only retrieve if plate is empty
-                if (holdingPlate.IsEmpty)
+                if (closestMapObject.TryPlaceItem(this.CurrentlyHolding as Ingredient))
                 {
-
+                    this.CurrentlyHolding = null;
                 }
-                // Plate is not empty, deposit
+            }
+            else if (this.CurrentlyHolding is Container)
+            {
+                var holdingContainer = this.CurrentlyHolding as Container;
+
+                // If holding an empty plate, try to retrieve first
+                if (holdingContainer is Plate && holdingContainer.IsEmpty)
+                {
+                    Ingredient resultIngredient;
+                    if (closestMapObject.TryTakeItemWithPlate(holdingContainer as Plate, out resultIngredient))
+                    {
+                        holdingContainer.TryAddIngredient(resultIngredient);
+                    }
+                    else
+                    {
+                        if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+                        {
+                            this.CurrentlyHolding = null;
+                        }
+                    }
+                }
+                // Check what's being placed
                 else
                 {
-
+                    if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+                    {
+                        this.CurrentlyHolding = null;
+                    }
+                }
+            }
+            else
+            {
+                if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+                {
+                    this.CurrentlyHolding = null;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called once per frame
         /// </summary>
@@ -208,7 +236,7 @@ namespace Assets.Overcooked
             #region Handles grabbing/dropping item
             if (Input.GetKeyDown(KeyCode.E))
             {
-                
+                this.HandleItemTransfer();
             }
             #endregion
         }
@@ -254,6 +282,8 @@ namespace Assets.Overcooked
                 {
                     return;
                 }
+
+
 
                 if (closestObject.TryPlaceItem(holdingPlate.Ingredeints[0]))
                 {

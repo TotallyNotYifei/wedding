@@ -57,7 +57,7 @@ namespace Assets.Overcooked
         /// <param name="plate">the plate being used to retrieve items</param>
         /// <param name="item">Resulting item</param>
         /// <returns>True if operation succeed</returns>
-        public virtual bool TryTakeItemWithPlate(Plate plate, out Holdable item)
+        public virtual bool TryTakeItemWithPlate(Plate plate, out Ingredient item)
         {
             item = null;
             return false;

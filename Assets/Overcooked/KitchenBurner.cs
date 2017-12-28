@@ -15,7 +15,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes the kitchen burner
     /// </summary>
-    public class KitchenBurner : OvercookedMapObject
+    public class KitchenBurner : KitchenCounter
     {
         /// <summary>
         /// The current cooking container on top
@@ -52,6 +52,11 @@ namespace Assets.Overcooked
             return false;
         }
 
+        /// <summary>
+        /// Try to place an item
+        /// </summary>
+        /// <param name="item">New item to be placed</param>
+        /// <returns>True if operation succeed</returns>
         public override bool TryPlaceItem(Holdable item)
         {
             // If there's nothing on top, only pans and pots can be placed

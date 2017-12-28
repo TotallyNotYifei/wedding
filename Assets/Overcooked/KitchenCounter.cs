@@ -81,7 +81,7 @@ namespace Assets.Overcooked
         /// <param name="plate">Plate used</param>
         /// <param name="item">Resulting item</param>
         /// <returns>True if succeed</returns>
-        public override bool TryTakeItemWithPlate(Plate plate, out Holdable item)
+        public override bool TryTakeItemWithPlate(Plate plate, out Ingredient item)
         {
             item = null;
 
