@@ -63,13 +63,19 @@ namespace Assets.Overcooked
         /// <returns>Ingredient if available</returns>
         public override Ingredient TryTakeoutContent()
         {
+            if (this.Ingredeints.Count == 0)
+            {
+                return null;
+            }
+
             if (this.CookProgress < 1)
             {
                 return null;
             }
 
+            var result = this.Ingredeints[0];
             this.Ingredeints.RemoveAt(0);
-            return this.Ingredeints[0];
+            return result;
         }
 
         /// <summary>

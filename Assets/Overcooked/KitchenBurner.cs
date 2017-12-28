@@ -20,7 +20,17 @@ namespace Assets.Overcooked
         /// <summary>
         /// The current cooking container on top
         /// </summary>
-        public CookingContainer CurrentContainer;
+        public CookingContainer CurrentContainer
+        {
+            get
+            {
+                return this.CurrentlyPlaced as CookingContainer;
+            }
+            set
+            {
+                this.CurrentlyPlaced = value;
+            }
+        }
 
         /// <summary>
         /// Gets the burner type

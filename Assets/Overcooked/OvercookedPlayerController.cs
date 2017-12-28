@@ -143,57 +143,49 @@ namespace Assets.Overcooked
             // If nothing is held, grab directly off of the map object
             if (this.CurrentlyHolding == null)
             {
-                Holdable newObject = null;
-                if (closestMapObject.TryTakeItemWithHand(out newObject))
-                {
-                    this.CurrentlyHolding = newObject;
-                    this._holdingRenderer = newObject.GetComponent<SpriteRenderer>();
-                }
+                this.TryGrabItem(closestMapObject);
             }
             // If the player is holding ingredient, deposit
-            else if (this.CurrentlyHolding is Ingredient)
-            {
-                if (closestMapObject.TryPlaceItem(this.CurrentlyHolding as Ingredient))
-                {
-                    this.CurrentlyHolding = null;
-                }
-            }
-            else if (this.CurrentlyHolding is Container)
-            {
-                var holdingContainer = this.CurrentlyHolding as Container;
-
-                // If holding an empty plate, try to retrieve first
-                if (holdingContainer is Plate && holdingContainer.IsEmpty)
-                {
-                    Ingredient resultIngredient;
-                    if (closestMapObject.TryTakeItemWithPlate(holdingContainer as Plate, out resultIngredient))
-                    {
-                        holdingContainer.TryAddIngredient(resultIngredient);
-                    }
-                    else
-                    {
-                        if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
-                        {
-                            this.CurrentlyHolding = null;
-                        }
-                    }
-                }
-                // Check what's being placed
-                else
-                {
-                    if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
-                    {
-                        this.CurrentlyHolding = null;
-                    }
-                }
-            }
             else
             {
-                if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
-                {
-                    this.CurrentlyHolding = null;
-                }
+                this.TryPlaceItem(closestMapObject);
             }
+            //else if (this.CurrentlyHolding is Container)
+            //{
+            //    var holdingContainer = this.CurrentlyHolding as Container;
+
+            //    // If holding an empty plate, try to retrieve first
+            //    if (holdingContainer is Plate && holdingContainer.IsEmpty)
+            //    {
+            //        Ingredient resultIngredient;
+            //        if (closestMapObject.TryTakeItemWithPlate(holdingContainer as Plate, out resultIngredient))
+            //        {
+            //            holdingContainer.TryAddIngredient(resultIngredient);
+            //        }
+            //        else
+            //        {
+            //            if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+            //            {
+            //                this.CurrentlyHolding = null;
+            //            }
+            //        }
+            //    }
+            //    // Check what's being placed
+            //    else
+            //    {
+            //        if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+            //        {
+            //            this.CurrentlyHolding = null;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (closestMapObject.TryPlaceItem(this.CurrentlyHolding))
+            //    {
+            //        this.CurrentlyHolding = null;
+            //    }
+            //}
         }
         
         /// <summary>
@@ -266,28 +258,45 @@ namespace Assets.Overcooked
         /// <param name="closestObject">The closest map object</param>
         private void TryPlaceItem(OvercookedMapObject closestObject)
         {
+            // If there's nothing to interact with, do nothing
             if (closestObject == null)
             {
                 return;
             }
 
+            // If the map object can take the item, do it normally
             if (closestObject.TryPlaceItem(this.CurrentlyHolding))
             {
                 this.CurrentlyHolding = null;
+                return;
             }
-            else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Plate)
+
+            // If player is holding a plate
+            if (this.CurrentlyHolding.HoldableType == HoldableTypes.Plate)
             {
                 var holdingPlate = this.CurrentlyHolding as Plate;
-                if (holdingPlate.Ingredeints.Count() != 1)
+
+                // If the plate is empty, try to grab the ingredient
+                if (holdingPlate.Ingredeints.Count == 0)
                 {
+                    Ingredient result;
+                    if (closestObject.TryTakeItemWithPlate(holdingPlate, out result))
+                    {
+                        holdingPlate.TryAddIngredient(result);
+                    }
+
                     return;
                 }
 
-
-
-                if (closestObject.TryPlaceItem(holdingPlate.Ingredeints[0]))
+                // If the plate contains only one ingredient, try pushing that ingredient
+                if (holdingPlate.Ingredeints.Count == 1)
                 {
-                    holdingPlate.Ingredeints.RemoveAt(0);
+                    var holdingPlateContent = holdingPlate.Ingredeints[0];
+                    if (closestObject.TryPlaceItem(holdingPlateContent))
+                    {
+                        holdingPlate.Ingredeints.RemoveAt(0);
+                        return;
+                    }
                 }
             }
         }
