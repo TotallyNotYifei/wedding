@@ -66,6 +66,22 @@ namespace Assets.Overcooked
         /// <returns>Resulting cooked food, null if not ready yet</returns>
         public override Ingredient TryTakeoutContent()
         {
+            var result = this.PeekIngredient();
+            if (result != null)
+            {
+                this.Ingredeints = new List<Ingredient>();
+                this.CookProgress = 0;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Try to peek the ingredient
+        /// </summary>
+        /// <returns></returns>
+        public override Ingredient PeekIngredient()
+        {
             if (this.CookProgress < 1)
             {
                 return null;

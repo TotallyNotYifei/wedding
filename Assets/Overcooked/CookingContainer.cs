@@ -138,5 +138,15 @@ namespace Assets.Overcooked
         {
             // Do nothing by default
         }
+
+        /// <summary>
+        /// Remove all content
+        /// </summary>
+        /// <param name="shouldDestroy">if content should be destroyed</param>
+        public override void RemoveAllContent(bool shouldDestroy)
+        {
+            this.CookProgress = 0;
+            base.RemoveAllContent(shouldDestroy);
+        }
     }
 }

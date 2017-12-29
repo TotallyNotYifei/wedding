@@ -41,6 +41,11 @@ namespace Assets.Overcooked
             IngredientEnum.Onion,
             IngredientEnum.OnionSoup };
 
+        private static HashSet<IngredientEnum> _choppedOnlyitems = new HashSet<IngredientEnum>() {
+            IngredientEnum.Lettunce,
+            IngredientEnum.Onion,
+            IngredientEnum.RawMeat };
+
         /// <summary>
         /// Try to add a new ingredient to a plate
         /// </summary>
@@ -48,7 +53,7 @@ namespace Assets.Overcooked
         /// <returns>True if operation succeed</returns>
         public override bool TryAddIngredient(Ingredient newIngredient)
         {
-            if (!newIngredient.IsChopped)
+            if (_choppedOnlyitems.Contains(newIngredient.IngredientType) && !newIngredient.IsChopped)
             {
                 return false;
             }
@@ -69,6 +74,16 @@ namespace Assets.Overcooked
             newIngredient.transform.localPosition = UnityEngine.Vector3.zero;
 
             return true;
+        }
+
+        public override Ingredient PeekIngredient()
+        {
+            if (this.Ingredeints.Count != 0)
+            {
+                return null;
+            }
+
+            return this.Ingredeints[0];
         }
     }
 }

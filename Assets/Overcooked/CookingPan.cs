@@ -45,16 +45,17 @@ namespace Assets.Overcooked
                 return false;
             }
 
-            if (newIngredient.IngredientType != IngredientEnum.RawMeat || !newIngredient.IsChopped)
+            if (newIngredient.IngredientType == IngredientEnum.RawMeat && newIngredient.IsChopped)
             {
-                return false;
+
+                this.Ingredeints.Add(newIngredient);
+                newIngredient.transform.position = this.transform.position;
+                this.ProgressBar.gameObject.SetActive(true);
+                this.ProgressLimit = 1;
+                return true;
             }
 
-            this.Ingredeints.Add(newIngredient);
-            newIngredient.transform.position = this.transform.position;
-            this.ProgressBar.gameObject.SetActive(true);
-            this.ProgressLimit = 1;
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -62,6 +63,30 @@ namespace Assets.Overcooked
         /// </summary>
         /// <returns>Ingredient if available</returns>
         public override Ingredient TryTakeoutContent()
+        {
+            var result = this.PeekIngredient();
+            if (result != null)
+            {
+                this.Ingredeints.RemoveAt(0);
+                return result;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Called when finished cooking
+        /// </summary>
+        protected override void OnFinishCookingHook()
+        {
+            this.Ingredeints[0].GetComponent<SpriteRenderer>().sprite = this.CookedMeatSprite;
+        }
+
+        /// <summary>
+        /// Peeks at the ingredient inside
+        /// </summary>
+        /// <returns></returns>
+        public override Ingredient PeekIngredient()
         {
             if (this.Ingredeints.Count == 0)
             {
@@ -73,17 +98,7 @@ namespace Assets.Overcooked
                 return null;
             }
 
-            var result = this.Ingredeints[0];
-            this.Ingredeints.RemoveAt(0);
-            return result;
-        }
-
-        /// <summary>
-        /// Called when finished cooking
-        /// </summary>
-        protected override void OnFinishCookingHook()
-        {
-            this.Ingredeints[0].GetComponent<SpriteRenderer>().sprite = this.CookedMeatSprite;
+            return this.Ingredeints[0];
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes a controller for a player
     /// </summary>
-    public  class OvercookedPlayerController : MonoBehaviour
+    public class OvercookedPlayerController : MonoBehaviour
     {
         /// <summary>
         /// The direction that the player is currently facing
@@ -81,7 +81,7 @@ namespace Assets.Overcooked
 
             var stickX = 0;
             var stickY = 0;
-            
+
             if (Input.GetKey(KeyCode.W))
             {
                 stickY = 1;
@@ -116,7 +116,7 @@ namespace Assets.Overcooked
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
             this._rgbd.MovePosition(this.transform.position + movementThisFrame);
 
-            if(this.CurrentlyHolding != null)
+            if (this.CurrentlyHolding != null)
             {
                 this.CurrentlyHolding.transform.position = this.transform.position + Config.HoldItemOffset[this.CurrentlyFacing];
                 this._holdingRenderer.sortingOrder = Config.HoldItemLayer[this.CurrentlyFacing];
@@ -187,7 +187,7 @@ namespace Assets.Overcooked
             //    }
             //}
         }
-        
+
         /// <summary>
         /// Called once per frame
         /// </summary>
@@ -299,6 +299,24 @@ namespace Assets.Overcooked
                     }
                 }
             }
+
+            var holdingContainer = this.CurrentlyHolding as Container;
+            if (holdingContainer != null)
+            {
+                var ingredient = holdingContainer.PeekIngredient();
+                if (ingredient != null)
+                {
+                    if (closestObject.TryPlaceItem(ingredient))
+                    {
+                        holdingContainer.RemoveAllContent(false);
+                    }
+                    else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Pot)
+                    {
+                        Destroy(ingredient.gameObject);
+                    }
+                }
+            }
         }
+
     }
 }

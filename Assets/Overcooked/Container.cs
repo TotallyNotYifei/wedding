@@ -32,5 +32,28 @@ namespace Assets.Overcooked
                 return this.Ingredeints.Count == 0;
             }
         }
+
+        /// <summary>
+        /// Peek  the ingredient
+        /// </summary>
+        /// <returns>Contained ingredient if available, null if not</returns>
+        public abstract Ingredient PeekIngredient();
+
+        /// <summary>
+        /// Remove all of the content
+        /// </summary>
+        /// <param name="shouldDestroy">if the content object should be destroeyd</param>
+        public virtual void RemoveAllContent(bool shouldDestroy)
+        {
+            if (shouldDestroy)
+            {
+                foreach (var ingredient in this.Ingredeints)
+                {
+                    Destroy(ingredient.gameObject);
+                }
+            }
+
+            this.Ingredeints = new List<Ingredient>();
+        }
     }
 }
