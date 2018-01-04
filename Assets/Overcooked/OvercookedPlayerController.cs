@@ -211,7 +211,7 @@ namespace Assets.Overcooked
                     checkPos,
                     Config.TargetRange
                 );
-                if (closestMapObject.ObjectType == OvercookedMapObjectTypes.ChoppingBoard)
+                if (closestMapObject is ChoppingBoard)
                 {
                     var choppingBoard = closestMapObject.GetComponent<ChoppingBoard>();
 
@@ -277,7 +277,7 @@ namespace Assets.Overcooked
                 var holdingPlate = this.CurrentlyHolding as Plate;
 
                 // If the plate is empty, try to grab the ingredient
-                if (holdingPlate.Ingredeints.Count == 0)
+                if (holdingPlate.Ingredients.Count == 0)
                 {
                     Ingredient result;
                     if (closestObject.TryTakeItemWithPlate(holdingPlate, out result))
@@ -289,18 +289,18 @@ namespace Assets.Overcooked
                 }
 
                 // If the plate contains only one ingredient, try pushing that ingredient
-                if (holdingPlate.Ingredeints.Count == 1)
+                if (holdingPlate.Ingredients.Count == 1)
                 {
-                    var holdingPlateContent = holdingPlate.Ingredeints[0];
+                    var holdingPlateContent = holdingPlate.Ingredients[0];
                     if (closestObject.TryPlaceItem(holdingPlateContent))
                     {
-                        holdingPlate.Ingredeints.RemoveAt(0);
+                        holdingPlate.Ingredients.RemoveAt(0);
                         return;
                     }
                 }
             }
 
-            var holdingContainer = this.CurrentlyHolding as Container;
+            var holdingContainer = this.CurrentlyHolding as HoldableContainer;
             if (holdingContainer != null)
             {
                 var ingredient = holdingContainer.PeekIngredient();
@@ -310,7 +310,7 @@ namespace Assets.Overcooked
                     {
                         holdingContainer.RemoveAllContent(false);
                     }
-                    else if (this.CurrentlyHolding.HoldableType == HoldableTypes.Pot)
+                    else if (this.CurrentlyHolding is CookingPot)
                     {
                         Destroy(ingredient.gameObject);
                     }

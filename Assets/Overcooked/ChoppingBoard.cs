@@ -16,7 +16,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes the chopping board
     /// </summary>
-    public class ChoppingBoard : OvercookedMapObject
+    public class ChoppingBoard : KitchenCounter
     {
         /// <summary>
         /// The progress bar
@@ -29,17 +29,6 @@ namespace Assets.Overcooked
         public float TimeToChop;
 
         /// <summary>
-        /// Returns chopping board as type
-        /// </summary>
-        public override OvercookedMapObjectTypes ObjectType
-        {
-            get
-            {
-                return OvercookedMapObjectTypes.ChoppingBoard;
-            }
-        }
-
-        /// <summary>
         /// If the board is currently chopping
         /// </summary>
         public bool IsChopping { get; set; }
@@ -50,49 +39,27 @@ namespace Assets.Overcooked
         private float _chopProgress;
 
         /// <summary>
-        /// The ingredient that's currently placed
+        /// The currently placed ingredient
         /// </summary>
-        private Ingredient _currentlyPlaced;
+        private Ingredient _currentPlacedIngredient;
 
         /// <summary>
         /// A list of choppable ingredients
         /// </summary>
-        private HashSet<IngredientEnum> Choppable = new HashSet<IngredientEnum>() { IngredientEnum.Lettunce, IngredientEnum.Onion, IngredientEnum.RawMeat, IngredientEnum.Tomato };
-
-        /// <summary>
-        /// Try to take an item from mthe board
-        /// </summary>
-        /// <param name="item">Item to be taken out</param>
-        /// <returns>True if successful</returns>
-        public override bool TryTakeItemWithHand(out Holdable item)
-        {
-            // if there's nothing to take
-            if (this._currentlyPlaced == null)
-            {
-                item = null;
-                return false;
-            }
-
-            // If chopping is in progress
-            if (0 < this._chopProgress && this._chopProgress< 1)
-            {
-                item = null;
-                return false;
-            }
-
-            item = this._currentlyPlaced;
-            this._currentlyPlaced = null;
-            return true;
-        }
+        private static HashSet<IngredientEnum> Choppable = new HashSet<IngredientEnum>() {
+            IngredientEnum.Lettunce,
+            IngredientEnum.Onion,
+            IngredientEnum.RawMeat,
+            IngredientEnum.Tomato };
 
         /// <summary>
         /// Try to place an item
         /// </summary>
         /// <param name="item">New item to be placed</param>
         /// <returns>True if operation succeed</returns>
-        public override bool TryPlaceItem(Holdable item)
+        public override bool TryAdd(IHoldable item)
         {
-            if (item.GetType() != typeof(Ingredient))
+            if (!(item is Ingredient))
             {
                 return false;
             }
@@ -108,12 +75,39 @@ namespace Assets.Overcooked
                 return false;
             }
 
-            this._currentlyPlaced = ingredient;
+            this.CurrentlyPlaced = ingredient;
+            this._currentPlacedIngredient = ingredient;
             this._chopProgress = 0;
             ingredient.transform.position = this.transform.position + new UnityEngine.Vector3(0, Config.ItemPlacementHeight);
             this.ProgressBar.gameObject.SetActive(true);
 
             return true;
+        }
+
+        public override IHoldable Peek()
+        {
+            if (this.CanChop())
+            {
+                return null;
+            }
+
+            return base.Peek();
+        }
+
+        public override IHoldable RetrieveContent()
+        {
+            if (this.CanChop())
+            {
+                return null;
+            }
+
+            var result = base.RetrieveContent();
+            if (result != null)
+            {
+                this._currentPlacedIngredient = null;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -122,7 +116,7 @@ namespace Assets.Overcooked
         /// <returns>True if the board can chop things</returns>
         public bool CanChop()
         {
-            return this._currentlyPlaced != null && this._chopProgress < 1;
+            return this.CurrentlyPlaced != null && this._chopProgress < 1;
         }
 
         /// <summary>
@@ -150,7 +144,7 @@ namespace Assets.Overcooked
                 if (this._chopProgress >= 1)
                 {
                     this.ProgressBar.gameObject.SetActive(false);
-                    this._currentlyPlaced.FinishChopping();
+                    this._currentPlacedIngredient.FinishChopping();
                 }
             }
         }

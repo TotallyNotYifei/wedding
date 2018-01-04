@@ -23,33 +23,22 @@ namespace Assets.Overcooked
         public Ingredient SoupPrefab;
 
         /// <summary>
-        /// The type
-        /// </summary>
-        public override HoldableTypes HoldableType
-        {
-            get
-            {
-                return HoldableTypes.Pot;
-            }
-        }
-
-        /// <summary>
         /// Try to add an additional ingredient
         /// </summary>
         /// <param name="newIngredient"></param>
         /// <returns></returns>
-        public override bool TryAddIngredient(Ingredient newIngredient)
+        public override bool TryAdd(IHoldable newIngredient)
         {
             if (newIngredient.IngredientType != IngredientEnum.Onion || !newIngredient.IsChopped)
             {
                 return false;
             }
 
-            if (this.Ingredeints.Count < 3)
+            if (this.Ingredients.Count < 3)
             {
-                this.Ingredeints.Add(newIngredient);
+                this.Ingredients.Add(newIngredient);
                 newIngredient.gameObject.SetActive(false);
-                this.ProgressLimit = 0.334f * this.Ingredeints.Count;
+                this.ProgressLimit = 0.334f * this.Ingredients.Count;
                 this.ResetTimeTillBurn();
                 this.ProgressBar.gameObject.SetActive(true);
                 return true;
@@ -64,12 +53,12 @@ namespace Assets.Overcooked
         /// Try to take out the content
         /// </summary>
         /// <returns>Resulting cooked food, null if not ready yet</returns>
-        public override Ingredient TryTakeoutContent()
+        public override IHoldable RetrieveContent()
         {
-            var result = this.PeekIngredient();
+            var result = this.Peek();
             if (result != null)
             {
-                this.Ingredeints = new List<Ingredient>();
+                this.Ingredients = new List<Ingredient>();
                 this.CookProgress = 0;
             }
 
@@ -80,7 +69,7 @@ namespace Assets.Overcooked
         /// Try to peek the ingredient
         /// </summary>
         /// <returns></returns>
-        public override Ingredient PeekIngredient()
+        public override IHoldable Peek()
         {
             if (this.CookProgress < 1)
             {

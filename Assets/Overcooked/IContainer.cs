@@ -1,5 +1,5 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="OvercookedMapObject.cs">
+//  <copyright file="IContainer.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
@@ -10,40 +10,34 @@ namespace Assets.Overcooked
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using UnityEngine;
 
     /// <summary>
-    /// Defines an object on the map
+    /// Defines a container
     /// </summary>
-    public abstract class OvercookedMapObject : MonoBehaviour, IContainer
+    public interface IContainer : IHoldable
     {
-        public abstract bool IsEmpty { get; }
-
-        /// <summary>
-        /// Used for initialization
-        /// </summary>
-        protected virtual void Start()
-        {
-            OvercookedGameController.CurrentInstance.AddMapObject(this);
-        }
-
         /// <summary>
         /// Peek the content of the container
         /// </summary>
         /// <returns>The holdable item currently in this container</returns>
-        public abstract IHoldable Peek();
+        IHoldable Peek();
 
         /// <summary>
         /// Take out the content
         /// </summary>
         /// <returns>The resulting content</returns>
-        public abstract IHoldable RetrieveContent();
+        IHoldable RetrieveContent();
 
         /// <summary>
         /// Try to add a new item 
         /// </summary>
         /// <param name="newItem">New item to be added</param>
         /// <returns>True if successful</returns>
-        public abstract bool TryAdd(IHoldable newItem);
+        bool TryAdd(IHoldable newItem);
+
+        /// <summary>
+        /// Gets a value indicating whether the plate is empty or not
+        /// </summary>
+        bool IsEmpty { get; }
     }
 }

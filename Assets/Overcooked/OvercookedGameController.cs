@@ -17,7 +17,7 @@ namespace Assets.Overcooked
     /// </summary>
     public class OvercookedGameController : MonoBehaviour
     {
-        public List<Container> containers;
+        public List<HoldableContainer> containers;
 
         /// <summary>
         /// How many of each item must be delivered before the game is over
@@ -110,7 +110,7 @@ namespace Assets.Overcooked
         {
             foreach (var item in recipe)
             {
-                if (!plate.Ingredeints.Contains(item))
+                if (!plate.Ingredients.Contains(item))
                 {
                     return false;
                 }

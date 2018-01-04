@@ -33,17 +33,6 @@ namespace Assets.Overcooked
         }
 
         /// <summary>
-        /// Gets the burner type
-        /// </summary>
-        public override OvercookedMapObjectTypes ObjectType
-        {
-            get
-            {
-                return OvercookedMapObjectTypes.Burner;
-            }
-        }
-
-        /// <summary>
         /// Try to take an item
         /// </summary>
         /// <param name="item">Resulting item</param>
@@ -73,11 +62,11 @@ namespace Assets.Overcooked
             if (this.CurrentContainer == null)
             {
                 CookingContainer container;
-                if (item.HoldableType == HoldableTypes.Pot)
+                if (item is CookingPot)
                 {
                     container = item as CookingPot;
                 }
-                else if (item.HoldableType == HoldableTypes.Pan)
+                else if (item is CookingPan)
                 {
                     container = item as CookingPan;
                 }
@@ -94,7 +83,7 @@ namespace Assets.Overcooked
             // There are stuff on the burner
             else
             {
-                if (item.HoldableType != HoldableTypes.Ingredient)
+                if (item is Ingredient)
                 {
                     return false;
                 }

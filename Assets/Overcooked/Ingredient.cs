@@ -18,17 +18,6 @@ namespace Assets.Overcooked
     public class Ingredient : Holdable
     {
         /// <summary>
-        /// Gets the holdable type
-        /// </summary>
-        public override HoldableTypes HoldableType
-        {
-            get
-            {
-                return HoldableTypes.Ingredient;
-            }
-        }
-
-        /// <summary>
         /// The ingredient
         /// </summary>
         public IngredientEnum IngredientType;

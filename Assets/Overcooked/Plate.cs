@@ -14,26 +14,15 @@ namespace Assets.Overcooked
     /// <summary>
     /// Describes a plate
     /// </summary>
-    public class Plate : Container
+    public class Plate : HoldableContainer
     {
-        /// <summary>
-        /// Gets the plate type
-        /// </summary>
-        public override HoldableTypes HoldableType
-        {
-            get
-            {
-                return HoldableTypes.Plate;
-            }
-        }
-
         /// <summary>
         /// Consumes the given ingredient
         /// </summary>
         /// <param name="ingredeint">Target ingredient</param>
         private void ConsumeIngredient(Ingredient ingredeint)
         {
-            this.Ingredeints.Add(ingredeint);
+            this.Ingredients.Add(ingredeint);
         }
 
         private static HashSet<IngredientEnum> _singleOnlyItems = new HashSet<IngredientEnum>() {
@@ -58,18 +47,18 @@ namespace Assets.Overcooked
                 return false;
             }
 
-            if (this.Ingredeints.Any(existIng => existIng.IngredientType == newIngredient.IngredientType))
+            if (this.Ingredients.Any(existIng => existIng.IngredientType == newIngredient.IngredientType))
             {
                 return false;
             }
 
             // Check for single plate stuff
-            if (this.Ingredeints.Count != 0 && _singleOnlyItems.Contains(newIngredient.IngredientType))
+            if (this.Ingredients.Count != 0 && _singleOnlyItems.Contains(newIngredient.IngredientType))
             {
                 return false;
             }
 
-            this.Ingredeints.Add(newIngredient);
+            this.Ingredients.Add(newIngredient);
             newIngredient.transform.parent = this.transform;
             newIngredient.transform.localPosition = UnityEngine.Vector3.zero;
 
@@ -78,12 +67,12 @@ namespace Assets.Overcooked
 
         public override Ingredient PeekIngredient()
         {
-            if (this.Ingredeints.Count != 0)
+            if (this.Ingredients.Count != 0)
             {
                 return null;
             }
 
-            return this.Ingredeints[0];
+            return this.Ingredients[0];
         }
     }
 }

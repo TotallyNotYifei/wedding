@@ -1,19 +1,17 @@
 ﻿//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="HoldableTypes.cs">
+//  <copyright file="IHoldable.cs">
 //    Copyright (c) Yifei Xu .  All rights reserved.
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
 namespace Assets.Overcooked
 {
-    /// <summary>
-    /// A list of possible holdable types
-    /// </summary>
-    public enum HoldableTypes
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    public interface IHoldable
     {
-        Ingredient,
-        Plate,
-        Pan,
-        Pot
     }
 }

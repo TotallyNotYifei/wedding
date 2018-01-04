@@ -16,7 +16,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Defines a container action
     /// </summary>
-    public abstract class CookingContainer : Container
+    public abstract class CookingContainer : HoldableContainer
     {
         /// <summary>
         /// The progress bar
@@ -60,7 +60,7 @@ namespace Assets.Overcooked
             set
             {
                 this._isOnBurner = value;
-                if (this.Ingredeints.Count > 0)
+                if (this.Ingredients.Count > 0)
                 {
                     this.ProgressBar.gameObject.SetActive(true);
                 }
@@ -71,12 +71,6 @@ namespace Assets.Overcooked
         /// If the cooking container is on a burner
         /// </summary>
         private bool _isOnBurner;
-
-        /// <summary>
-        /// Try to take out the content of the container
-        /// </summary>
-        /// <returns>The ingredient inside</returns>
-        public abstract Ingredient TryTakeoutContent();
 
         /// <summary>
         /// Used for initialization
@@ -90,13 +84,8 @@ namespace Assets.Overcooked
         /// <summary>
         /// Called once per frame
         /// </summary>
-        protected virtual void Update()
-        {
-            foreach (var ingredient in this.Ingredeints)
-            {
-                ingredient.transform.position = this.transform.position;
-            }
-
+        protected override  void Update()
+        {           
             if (this.IsOnBurner)
             {
                 if (this.CookProgress >= this.ProgressLimit)
@@ -121,6 +110,8 @@ namespace Assets.Overcooked
             {
                 this.ProgressBar.setRatio(this.CookProgress);
             }
+
+            base.Update();
         }
 
         /// <summary>
@@ -139,14 +130,12 @@ namespace Assets.Overcooked
             // Do nothing by default
         }
 
-        /// <summary>
-        /// Remove all content
-        /// </summary>
-        /// <param name="shouldDestroy">if content should be destroyed</param>
-        public override void RemoveAllContent(bool shouldDestroy)
+        public override bool IsEmpty
         {
-            this.CookProgress = 0;
-            base.RemoveAllContent(shouldDestroy);
+            get
+            {
+                return this.Ingredients.Count > 0;
+            }
         }
     }
 }

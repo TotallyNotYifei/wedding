@@ -23,33 +23,27 @@ namespace Assets.Overcooked
         public Sprite CookedMeatSprite;
 
         /// <summary>
-        /// The type of holdable that this is
-        /// </summary>
-        public override HoldableTypes HoldableType
-        {
-            get
-            {
-                return HoldableTypes.Pan;
-            }
-        }
-
-        /// <summary>
         /// Try to add an ingredient to the pan
         /// </summary>
         /// <param name="newIngredient">new ingredient to be added</param>
         /// <returns>True if ingredient was added successfull</returns>
-        public override bool TryAddIngredient(Ingredient newIngredient)
+        public override bool TryAdd(IHoldable newIngredient)
         {
-            if (this.Ingredeints.Count > 0)
+            var newIngObj = newIngredient as Ingredient;
+            if (newIngObj == null)
+            {
+                return false;
+            }
+            if (this.Ingredients.Count > 0)
             {
                 return false;
             }
 
-            if (newIngredient.IngredientType == IngredientEnum.RawMeat && newIngredient.IsChopped)
+            if (newIngObj.IngredientType == IngredientEnum.RawMeat && newIngObj.IsChopped)
             {
 
-                this.Ingredeints.Add(newIngredient);
-                newIngredient.transform.position = this.transform.position;
+                this.Ingredients.Add(newIngObj);
+                newIngObj.transform.position = this.transform.position;
                 this.ProgressBar.gameObject.SetActive(true);
                 this.ProgressLimit = 1;
                 return true;
@@ -62,12 +56,12 @@ namespace Assets.Overcooked
         /// Try to take out the content
         /// </summary>
         /// <returns>Ingredient if available</returns>
-        public override Ingredient TryTakeoutContent()
+        public override IHoldable RetrieveContent()
         {
             var result = this.PeekIngredient();
             if (result != null)
             {
-                this.Ingredeints.RemoveAt(0);
+                this.Ingredients.RemoveAt(0);
                 return result;
             }
 
@@ -79,16 +73,16 @@ namespace Assets.Overcooked
         /// </summary>
         protected override void OnFinishCookingHook()
         {
-            this.Ingredeints[0].GetComponent<SpriteRenderer>().sprite = this.CookedMeatSprite;
+            this.Ingredients[0].GetComponent<SpriteRenderer>().sprite = this.CookedMeatSprite;
         }
 
         /// <summary>
         /// Peeks at the ingredient inside
         /// </summary>
         /// <returns></returns>
-        public override Ingredient PeekIngredient()
+        public override IHoldable Peek()
         {
-            if (this.Ingredeints.Count == 0)
+            if (this.Ingredients.Count == 0)
             {
                 return null;
             }
@@ -98,7 +92,7 @@ namespace Assets.Overcooked
                 return null;
             }
 
-            return this.Ingredeints[0];
+            return this.Ingredients[0];
         }
     }
 }

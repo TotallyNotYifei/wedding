@@ -22,32 +22,55 @@ namespace Assets.Overcooked
         public Ingredient IngredientPrefab;
 
         /// <summary>
-        /// Gets the type of object that the crate is
+        /// The next item to be grabbed
         /// </summary>
-        public override OvercookedMapObjectTypes ObjectType
+        private Ingredient _nextItem;
+
+        /// <summary>
+        /// Used for initialzation
+        /// </summary>
+        protected override void Start()
         {
-            get
-            {
-                return OvercookedMapObjectTypes.FoodCrate;
-            }
+            this.SpawnNew();
         }
 
         /// <summary>
-        /// Try to grab an item from here
+        /// Spawns a new ingredient and makes it invisible
         /// </summary>
-        /// <param name="item">Result item</param>
-        /// <returns>True if operation successful</returns>
-        public override bool TryTakeItemWithHand(out Holdable item)
+        private void SpawnNew()
         {
-            // If there's something on top, treat it as a counter
+            this._nextItem = Instantiate(IngredientPrefab);
+            this._nextItem.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Peek the content
+        /// </summary>
+        /// <returns>Resulting item</returns>
+        public override IHoldable Peek()
+        {
             if (this.CurrentlyPlaced != null)
             {
-                return base.TryTakeItemWithHand(out item);
+                return base.Peek();
             }
 
-            var newIngredient = Instantiate(this.IngredientPrefab);
-            item = newIngredient;
-            return true;
+            return _nextItem;
+        }
+
+        /// <summary>
+        /// Retrieve the content
+        /// </summary>
+        /// <returns>result item</returns>
+        public override IHoldable RetrieveContent()
+        {
+            if (this.CurrentlyPlaced != null)
+            {
+                return base.RetrieveContent();
+            }
+
+            var result = this._nextItem;
+            result.gameObject.SetActive(true);
+            return result;
         }
     }
 }
