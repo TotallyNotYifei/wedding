@@ -25,10 +25,16 @@ namespace Assets.Overcooked
         /// <summary>
         /// Try to add an additional ingredient
         /// </summary>
-        /// <param name="newIngredient"></param>
+        /// <param name="newItem"></param>
         /// <returns></returns>
-        public override bool TryAdd(IHoldable newIngredient)
+        public override bool TryAdd(IHoldable newItem)
         {
+            var newIngredient = newItem as Ingredient;
+            if (newIngredient == null)
+            {
+                return false;
+            }
+
             if (newIngredient.IngredientType != IngredientEnum.Onion || !newIngredient.IsChopped)
             {
                 return false;

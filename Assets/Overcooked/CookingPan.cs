@@ -58,7 +58,7 @@ namespace Assets.Overcooked
         /// <returns>Ingredient if available</returns>
         public override IHoldable RetrieveContent()
         {
-            var result = this.PeekIngredient();
+            var result = this.Peek();
             if (result != null)
             {
                 this.Ingredients.RemoveAt(0);

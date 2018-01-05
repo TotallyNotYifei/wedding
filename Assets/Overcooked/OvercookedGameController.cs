@@ -61,7 +61,7 @@ namespace Assets.Overcooked
             this._mapObjects.Add(newObject);
             if (this.containers.Count > 0)
             {
-                if (newObject.TryPlaceItem(this.containers[0]))
+                if (newObject.TryAdd(this.containers[0]))
                 {
                     this.containers.RemoveAt(0);
                 }

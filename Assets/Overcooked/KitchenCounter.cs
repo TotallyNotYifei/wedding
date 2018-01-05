@@ -58,9 +58,10 @@ namespace Assets.Overcooked
 
             if (this.CurrentlyPlaced != null)
             {
-                if (item is Ingredient)
+                var currentPlacecdContainer = this.CurrentlyPlaced as IContainer;
+                if (currentPlacecdContainer != null)
                 {
-                    return this.CurrentlyPlaced.TryAddIngredient(item as Ingredient);
+                    return currentPlacecdContainer.TryAdd(item as Ingredient);
                 }
                 else
                 {

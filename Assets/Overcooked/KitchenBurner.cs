@@ -32,64 +32,29 @@ namespace Assets.Overcooked
             }
         }
 
-        /// <summary>
-        /// Try to take an item
-        /// </summary>
-        /// <param name="item">Resulting item</param>
-        /// <returns>True if an item was taken successfully</returns>
-        public override bool TryTakeItemWithHand(out Holdable item)
-        {
-            if (this.CurrentContainer != null)
-            {
-                this.CurrentContainer.IsOnBurner = false;
-                item = this.CurrentContainer;
-                this.CurrentContainer = null;
-                return true;
-            }
-
-            item = null;
-            return false;
-        }
 
         /// <summary>
         /// Try to place an item
         /// </summary>
-        /// <param name="item">New item to be placed</param>
+        /// <param name="newItem">New item to be placed</param>
         /// <returns>True if operation succeed</returns>
-        public override bool TryPlaceItem(Holdable item)
+        public override bool TryAdd(IHoldable newItem)
         {
             // If there's nothing on top, only pans and pots can be placed
-            if (this.CurrentContainer == null)
+            if (this.CurrentContainer != null)
             {
-                CookingContainer container;
-                if (item is CookingPot)
-                {
-                    container = item as CookingPot;
-                }
-                else if (item is CookingPan)
-                {
-                    container = item as CookingPan;
-                }
-                else
-                {
-                    return false;
-                }
-
-                item.transform.position = this.transform.position + new Vector3(0, Config.ItemPlacementHeight);
-                container.IsOnBurner = true;
-                this.CurrentContainer = container;
-                return true;
+                return false;
             }
-            // There are stuff on the burner
-            else
+            var newCookingContainer = newItem as CookingContainer;
+            if (newCookingContainer == null)
             {
-                if (item is Ingredient)
-                {
-                    return false;
-                }
-
-                return this.CurrentContainer.TryAddIngredient(item as Ingredient);
+                return false;
             }
+
+            newCookingContainer.transform.position = this.transform.position + new Vector3(0, Config.ItemPlacementHeight);
+            newCookingContainer.IsOnBurner = true;
+            this.CurrentContainer = newCookingContainer;
+            return true;
         }
     }
 }

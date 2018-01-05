@@ -38,10 +38,16 @@ namespace Assets.Overcooked
         /// <summary>
         /// Try to add a new ingredient to a plate
         /// </summary>
-        /// <param name="newIngredient">New ingredient to be added</param>
+        /// <param name="newItem">New ingredient to be added</param>
         /// <returns>True if operation succeed</returns>
-        public override bool TryAddIngredient(Ingredient newIngredient)
+        public override bool TryAdd(IHoldable newItem)
         {
+            var newIngredient = newItem as Ingredient;
+            if (newIngredient == null)
+            {
+                return false;
+            }
+
             if (_choppedOnlyitems.Contains(newIngredient.IngredientType) && !newIngredient.IsChopped)
             {
                 return false;
@@ -65,7 +71,7 @@ namespace Assets.Overcooked
             return true;
         }
 
-        public override Ingredient PeekIngredient()
+        public override IHoldable Peek()
         {
             if (this.Ingredients.Count != 0)
             {
@@ -73,6 +79,13 @@ namespace Assets.Overcooked
             }
 
             return this.Ingredients[0];
+        }
+
+        public override IHoldable RetrieveContent()
+        {
+            var result = this.Peek();
+            this.Ingredients = new List<Ingredient>();
+            return result;
         }
     }
 }
