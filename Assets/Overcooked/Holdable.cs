@@ -29,5 +29,14 @@ namespace Assets.Overcooked
         {
             this.SpriteComponent = this.GetComponent<SpriteRenderer>();
         }
+
+        /// <summary>
+        /// Sets the display layer of the container
+        /// </summary>
+        /// <param name="newLayer">the new layer id</param>
+        public virtual void SetDisplayLayer(int newLayer)
+        {
+            this.SpriteComponent.sortingOrder = newLayer;
+        }
     }
 }

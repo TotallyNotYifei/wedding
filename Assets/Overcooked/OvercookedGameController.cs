@@ -59,6 +59,11 @@ namespace Assets.Overcooked
         public void AddMapObject(OvercookedMapObject newObject)
         {
             this._mapObjects.Add(newObject);
+            if (newObject is FoodCrate)
+            {
+                Debug.Log("Found food crate");
+            }
+
             if (this.containers.Count > 0)
             {
                 if (newObject.TryAdd(this.containers[0]))

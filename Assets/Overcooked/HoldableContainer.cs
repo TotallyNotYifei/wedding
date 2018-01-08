@@ -46,5 +46,15 @@ namespace Assets.Overcooked
                 ingredient.transform.position = this.transform.position;
             }
         }
+
+        public override void SetDisplayLayer(int newLayer)
+        {
+            foreach (var ingredient in this.Ingredients)
+            {
+                ingredient.SetDisplayLayer(newLayer + 1);
+            }
+
+            base.SetDisplayLayer(newLayer);
+        }
     }
 }

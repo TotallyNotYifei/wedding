@@ -14,7 +14,7 @@ namespace Assets.Overcooked
     /// <summary>
     /// Defines a container
     /// </summary>
-    public interface IContainer : IHoldable
+    public interface IContainer
     {
         /// <summary>
         /// Peek the content of the container

@@ -32,6 +32,7 @@ namespace Assets.Overcooked
         protected override void Start()
         {
             this.SpawnNew();
+            base.Start();
         }
 
         /// <summary>
@@ -41,6 +42,14 @@ namespace Assets.Overcooked
         {
             this._nextItem = Instantiate(IngredientPrefab);
             this._nextItem.gameObject.SetActive(false);
+        }
+
+        public override bool IsEmpty
+        {
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>

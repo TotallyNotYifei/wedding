@@ -23,11 +23,6 @@ namespace Assets.Overcooked
         public DirectionEnum CurrentlyFacing { get; private set; }
 
         /// <summary>
-        /// Game object for the arms
-        /// </summary>
-        public GameObject Arms;
-
-        /// <summary>
         /// THe object that the player is currently holding
         /// </summary>
         public PlayerHands Hands;
@@ -106,11 +101,11 @@ namespace Assets.Overcooked
                     this._animator.SetBool(Config.DirectionToAnimatorParam[direction], direction == this.CurrentlyFacing);
                 }
 
-                this.Hands.OnTurn(this.CurrentlyFacing);
             }
 
             var movementThisFrame = new Vector3(stickX, stickY).normalized * Config.MovementSpeed * Time.deltaTime;
             this._rgbd.MovePosition(this.transform.position + movementThisFrame);
+            this.Hands.UpdateHands(this.CurrentlyFacing);
             #endregion
         }
 
@@ -132,7 +127,7 @@ namespace Assets.Overcooked
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
+                var checkPos = this.transform.position + Config.HoldingDirectionOffset[this.CurrentlyFacing];
                 var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
                     checkPos,
                     Config.TargetRange
@@ -154,7 +149,7 @@ namespace Assets.Overcooked
             #region Handles grabbing/dropping item
             if (Input.GetKeyDown(KeyCode.E))
             {
-                var checkPos = this.transform.position + Config.FaceDirectionOffset[this.CurrentlyFacing];
+                var checkPos = this.transform.position + Config.HoldingDirectionOffset[this.CurrentlyFacing];
                 var closestMapObject = OvercookedGameController.CurrentInstance.GetClosestMapObjectAtWorldPosition(
                     checkPos,
                     Config.TargetRange
@@ -164,9 +159,51 @@ namespace Assets.Overcooked
                 {
                     return;
                 }
-                this.Hands.Interact(closestMapObject);
+
+                IContainer source = this.Hands;
+                IContainer destination = closestMapObject;
+
+                if (source.IsEmpty && destination.IsEmpty)
+                {
+                    return;
+                }
+
+                var sourceHolding = source.Peek() as IContainer;
+                var destinationHolding = destination.Peek() as IContainer;
+
+                if (destinationHolding != null && sourceHolding != null)
+                {
+                    source = sourceHolding;
+                    destination = destinationHolding;
+                }
+
+                else if (source.IsEmpty)
+                {
+                    var swapValue = source;
+                    source = destination;
+                    destination = swapValue;
+                }
+
+                TransferItem(source, destination);
             }
             #endregion
+        }
+
+        /// <summary>
+        /// Transfer item from the source to destination
+        /// </summary>
+        /// <param name="source">source container</param>
+        /// <param name="destination">destination container</param>
+        private static void TransferItem(IContainer source, IContainer destination)
+        {
+            var content = source.Peek();
+
+            if (!destination.TryAdd(content))
+            {
+                return;
+            }
+
+            source.RetrieveContent();
         }
     }
 }

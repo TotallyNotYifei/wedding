@@ -79,6 +79,7 @@ namespace Assets.Overcooked
         {
             this.CookProgress = 0;
             this.ResetTimeTillBurn();
+            base.Start();
         }
 
         /// <summary>

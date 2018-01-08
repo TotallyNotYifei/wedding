@@ -22,6 +22,16 @@ namespace Assets.Overcooked
         /// </summary>
         public IHoldable CurrentlyHolding { get; private set; }
 
+        private MonoBehaviour CurrentlyHeldObject
+        {
+            get
+            {
+                return this.CurrentlyHolding as MonoBehaviour;
+            }
+        }
+
+        private SpriteRenderer _sprite;
+
         public bool IsEmpty
         {
             get
@@ -49,24 +59,32 @@ namespace Assets.Overcooked
                 return false;
             }
 
+            this.CurrentlyHolding = newItem;
             return true;
+        }
+
+        /// <summary>
+        /// Used for intialization
+        /// </summary>
+        protected void Start()
+        {
+            this._sprite = this.GetComponent<SpriteRenderer>();
         }
 
         /// <summary>
         /// Called when the player turns
         /// </summary>
-        /// <param name="newDirection">The direction that the player is now facing</param>
-        public void OnTurn(DirectionEnum newDirection)
+        /// <param name="currentlyfacing">The direction that the player is now facing</param>
+        public void UpdateHands(DirectionEnum currentlyfacing)
         {
-        }
+            var newLayer = currentlyfacing == DirectionEnum.Up ? -2 : 0;
 
-        /// <summary>
-        /// When the player hits E 
-        /// </summary>
-        /// <param name="nearest">The nearest map object</param>
-        public void Interact(OvercookedMapObject nearest)
-        {
-
+            this._sprite.sortingOrder = newLayer;
+            if (this.CurrentlyHolding != null)
+            {
+                this.CurrentlyHolding.SetDisplayLayer(newLayer + 1);
+                this.CurrentlyHeldObject.transform.position = this.transform.position + Config.HoldingDirectionOffset[currentlyfacing];
+            }
         }
     }
 }

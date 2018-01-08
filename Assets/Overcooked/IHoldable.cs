@@ -13,5 +13,11 @@ namespace Assets.Overcooked
 
     public interface IHoldable
     {
+
+        /// <summary>
+        /// Sets the display layer of the container
+        /// </summary>
+        /// <param name="newLayer">the new layer id</param>
+        void SetDisplayLayer(int newLayer);
     }
 }

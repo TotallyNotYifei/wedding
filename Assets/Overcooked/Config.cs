@@ -28,11 +28,11 @@ namespace Assets.Overcooked
             DirectionToAnimatorParam[DirectionEnum.Down] = "IsDown";
             DirectionToAnimatorParam[DirectionEnum.Right] = "IsRight";
 
-            FaceDirectionOffset = new Dictionary<DirectionEnum, Vector3>();
-            FaceDirectionOffset[DirectionEnum.Up] = new Vector3(0, 0.17f);
-            FaceDirectionOffset[DirectionEnum.Left] = new Vector3(-0.32f, -0.08f);
-            FaceDirectionOffset[DirectionEnum.Down] = new Vector3(0, -0.31f);
-            FaceDirectionOffset[DirectionEnum.Right] = new Vector3(0.32f, -0.08f);
+            HoldingDirectionOffset = new Dictionary<DirectionEnum, Vector3>();
+            HoldingDirectionOffset[DirectionEnum.Up] = new Vector3(0, 0.17f);
+            HoldingDirectionOffset[DirectionEnum.Left] = new Vector3(-0.32f, -0.08f);
+            HoldingDirectionOffset[DirectionEnum.Down] = new Vector3(0, -0.31f);
+            HoldingDirectionOffset[DirectionEnum.Right] = new Vector3(0.32f, -0.08f);
 
             FinishedBurger = new List<IngredientEnum>();
             FinishedBurger.Add(IngredientEnum.BurgerBun);
@@ -89,7 +89,7 @@ namespace Assets.Overcooked
         /// <summary>
         /// A dictionary of directionEnum => Vector3 as direction
         /// </summary>
-        public static Dictionary<DirectionEnum, Vector3> FaceDirectionOffset;
+        public static Dictionary<DirectionEnum, Vector3> HoldingDirectionOffset;
 
         /// <summary>
         /// A dictionary of holding item => item offset
