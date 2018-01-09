@@ -36,12 +36,12 @@ namespace Assets.Overcooked
         /// <summary>
         /// How much cooking can be done
         /// </summary>
-        protected float CookProgress;
+        public float CookProgress;
 
         /// <summary>
         /// How far the cooking can be done based on the ingredients put in
         /// </summary>
-        protected float ProgressLimit;
+        public float ProgressLimit;
 
         /// <summary>
         /// How long this dish has until it burns
@@ -103,7 +103,7 @@ namespace Assets.Overcooked
                 }
             }
 
-            if (this.CookProgress <= 0 || this.CookProgress >= 1)
+            if (this.Ingredients.Count == 0 || this.CookProgress >= 1)
             {
                 this.ProgressBar.gameObject.SetActive(false);
             }
@@ -137,6 +137,15 @@ namespace Assets.Overcooked
             {
                 return this.Ingredients.Count > 0;
             }
+        }
+
+        public override void Dump()
+        {
+            this.CookProgress = 0;
+            this.ProgressBar.setRatio(0);
+            this.ProgressBar.gameObject.SetActive(false);
+            this.ProgressLimit = 0;
+            base.Dump();
         }
     }
 }

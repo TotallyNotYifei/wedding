@@ -64,5 +64,10 @@ namespace Assets.Overcooked
             this._isChopped = false;
             base.Start();
         }
+
+        public override void Dump()
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

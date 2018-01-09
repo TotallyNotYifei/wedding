@@ -86,5 +86,15 @@ namespace Assets.Overcooked
                 this.CurrentlyHeldObject.transform.position = this.transform.position + Config.HoldingDirectionOffset[currentlyfacing];
             }
         }
+
+        public void Dump()
+        {
+            if (this.CurrentlyHeldObject != null)
+            {
+                Destroy(this.CurrentlyHeldObject.gameObject);
+            }
+
+            this.CurrentlyHolding = null;
+        }
     }
 }

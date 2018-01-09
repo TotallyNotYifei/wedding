@@ -73,7 +73,7 @@ namespace Assets.Overcooked
 
         public override IHoldable Peek()
         {
-            if (this.Ingredients.Count != 0)
+            if (this.Ingredients.Count == 0)
             {
                 return null;
             }

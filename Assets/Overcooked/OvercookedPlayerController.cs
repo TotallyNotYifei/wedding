@@ -171,14 +171,23 @@ namespace Assets.Overcooked
                 var sourceHolding = source.Peek() as IContainer;
                 var destinationHolding = destination.Peek() as IContainer;
 
-                if (destinationHolding != null && sourceHolding != null)
+                if (destinationHolding != null && !source.IsEmpty)
                 {
-                    source = sourceHolding;
                     destination = destinationHolding;
+
+                    if (sourceHolding != null)
+                    {
+                        source = sourceHolding;
+                    }
                 }
 
-                else if (source.IsEmpty)
+                if (source.IsEmpty)
                 {
+                    if (destination.IsEmpty)
+                    {
+                        return;
+                    }
+
                     var swapValue = source;
                     source = destination;
                     destination = swapValue;
@@ -196,7 +205,17 @@ namespace Assets.Overcooked
         /// <param name="destination">destination container</param>
         private static void TransferItem(IContainer source, IContainer destination)
         {
+            // Cannot transfer between plates
+            if (source is Plate && destination is Plate)
+            {
+                return;
+            }
             var content = source.Peek();
+
+            if (content == null)
+            {
+                return;
+            }
 
             if (!destination.TryAdd(content))
             {

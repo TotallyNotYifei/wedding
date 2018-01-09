@@ -79,6 +79,7 @@ namespace Assets.Overcooked
 
             var result = this._nextItem;
             result.gameObject.SetActive(true);
+            this.SpawnNew();
             return result;
         }
     }

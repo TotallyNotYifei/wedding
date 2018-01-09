@@ -56,5 +56,11 @@ namespace Assets.Overcooked
             this.CurrentContainer = newCookingContainer;
             return true;
         }
+
+        public override IHoldable RetrieveContent()
+        {
+            this.CurrentContainer.IsOnBurner = false;
+            return base.RetrieveContent();
+        }
     }
 }

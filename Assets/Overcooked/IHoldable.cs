@@ -19,5 +19,10 @@ namespace Assets.Overcooked
         /// </summary>
         /// <param name="newLayer">the new layer id</param>
         void SetDisplayLayer(int newLayer);
+
+        /// <summary>
+        /// Dumps the content
+        /// </summary>
+        void Dump();
     }
 }

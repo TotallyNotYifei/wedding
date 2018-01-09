@@ -37,6 +37,9 @@ namespace Assets.Overcooked
         public virtual void SetDisplayLayer(int newLayer)
         {
             this.SpriteComponent.sortingOrder = newLayer;
-        }
+        } /// <summary>
+          /// Dumps the content
+          /// </summary>
+        public abstract void Dump();
     }
 }

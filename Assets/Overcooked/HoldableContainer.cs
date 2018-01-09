@@ -26,7 +26,7 @@ namespace Assets.Overcooked
         {
             get
             {
-                return this.Ingredients.Count > 0;
+                return this.Ingredients.Count == 0;
             }
         }
 
@@ -55,6 +55,19 @@ namespace Assets.Overcooked
             }
 
             base.SetDisplayLayer(newLayer);
+        }
+
+        /// <summary>
+        /// Dumps everything in the container into the garbage
+        /// </summary>
+        public override void Dump()
+        {
+            foreach (var ingredient in this.Ingredients)
+            {
+                Destroy(ingredient.gameObject);
+            }
+            
+            this.Ingredients = new List<Ingredient>();
         }
     }
 }
